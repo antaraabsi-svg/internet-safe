@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>إنترنت آمن، جيل واعٍ — ديوان قطاع الشباب والرياضة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --navy:#0E1B5C; --royal:#1F45C9; --violet:#6A35C9; --gold:#E4B03A; --orange:#FF7A1F;
+  --green:#0C7B3E; --red:#D0243F;
+  --bg:#EEF0FF; --panel:#FFFFFF; --ink:#111A44; --muted:#4B5486; --line:#D6DBF6; --soft:#F4F5FF;
+  --okbg:#E4F5EA; --midbg:#FFF1DE; --badbg:#FDE5E9;
+  --f-display:'Lalezar','Tajawal','Segoe UI',Tahoma,sans-serif;
+  --f-body:'Tajawal','Segoe UI',Tahoma,Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0A1240; --panel:#141F66; --ink:#EEF0FF; --muted:#BAC1F0; --line:#2C3B96; --soft:#1A2878;
+    --okbg:#0F3B27; --midbg:#4A3413; --badbg:#4B1A2A;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0A1240; --panel:#141F66; --ink:#EEF0FF; --muted:#BAC1F0; --line:#2C3B96; --soft:#1A2878;
+  --okbg:#0F3B27; --midbg:#4A3413; --badbg:#4B1A2A;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);font-size:100%}
+html.stage{font-size:125%}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);line-height:1.75;min-height:100vh;-webkit-text-size-adjust:100%}
+button{font-family:inherit;font-size:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+
+/* flag stripe: green | white with a thin red line */
+.stripe{height:8px;background:linear-gradient(90deg,var(--green) 0 50%,#fff 50% 96%,var(--red) 96% 100%)}
+
+/* header */
+.top{background:linear-gradient(135deg,var(--navy),#1a2f9a 60%,var(--violet));color:#fff;padding:.7rem 1rem}
+.top-in{max-width:980px;margin:auto;display:flex;align-items:center;gap:.8rem;flex-wrap:wrap}
+.top img{width:56px;height:56px;border-radius:50%;border:2px solid var(--gold);background:#fff;flex:none}
+.top h1{font-family:var(--f-display);font-weight:400;font-size:1.35rem;margin:0;line-height:1.2;letter-spacing:0}
+.top small{display:block;font-size:.8rem;opacity:.85}
+.tools{margin-inline-start:auto;display:flex;gap:.4rem;flex-wrap:wrap}
+.tbtn{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:999px;padding:.3rem .85rem;font-size:.85rem}
+.tbtn:hover{background:rgba(255,255,255,.22)}
+.tbtn[aria-pressed="true"]{background:var(--gold);color:var(--navy);border-color:var(--gold)}
+
+/* route track */
+.track-wrap{background:var(--navy);padding:.9rem 1rem 1rem;overflow-x:auto}
+.track{max-width:980px;margin:auto;display:flex;align-items:flex-start;min-width:900px;position:relative}
+.node{flex:1;display:flex;flex-direction:column;align-items:center;gap:.25rem;background:none;border:0;color:#B9C1F5;position:relative;padding:0 .1rem;font-size:.75rem;line-height:1.3}
+.node .dot{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-size:1.05rem;background:#1b2a80;border:2px solid #3A4BB0;position:relative;z-index:2;transition:transform .2s}
+.node::before{content:"";position:absolute;top:19px;inset-inline:-50% 50%;height:4px;background:#2c3b96;z-index:1}
+.node:first-child::before{display:none}
+.node.done::before,.node.cur::before{background:var(--gold)}
+.node.done .dot{background:var(--gold);border-color:var(--gold);color:var(--navy)}
+.node.cur{color:#fff;font-weight:700}
+.node.cur .dot{background:#fff;border-color:var(--gold);box-shadow:0 0 0 4px rgba(228,176,58,.45);transform:scale(1.12)}
+
+/* main */
+main{max-width:980px;margin:1.2rem auto 2rem;padding:0 1rem}
+.card{background:var(--panel);border:2px solid var(--line);border-radius:22px;padding:1.4rem 1.5rem 1.2rem;position:relative;overflow:hidden}
+.card::after{content:"";position:absolute;inset-inline-start:0;top:0;width:8px;height:100%;background:linear-gradient(var(--gold),var(--orange) 55%,var(--violet))}
+h2{font-family:var(--f-display);font-weight:400;font-size:1.9rem;line-height:1.3;margin:.1rem 0 .3rem;color:var(--royal)}
+:root[data-theme="dark"] h2{color:#AFC0FF}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) h2{color:#AFC0FF}}
+.lead{color:var(--muted);margin:0 0 1rem;max-width:62ch}
+.ctx{font-weight:700;margin:.4rem 0}
+.bubble{background:var(--soft);border:2px solid var(--line);border-radius:18px 18px 18px 4px;padding:.9rem 1.1rem;margin:.4rem 0 1rem;max-width:64ch;position:relative}
+.bubble::before{content:"مجهول";position:absolute;top:-.85rem;inset-inline-start:.9rem;background:var(--violet);color:#fff;font-size:.72rem;padding:0 .6rem;border-radius:999px;line-height:1.6}
+.opts{display:grid;gap:.6rem;max-width:720px}
+.opt{text-align:start;background:var(--panel);color:var(--ink);border:2px solid var(--line);border-radius:14px;padding:.75rem 1rem;transition:border-color .15s,background .15s}
+.opt:hover:not(:disabled){border-color:var(--royal);background:var(--soft)}
+.opt:disabled{cursor:default}
+.opt.dim{opacity:.55}
+.opt.pick.s2,.opt.right{border-color:var(--green);background:var(--okbg)}
+.opt.pick.s1{border-color:var(--orange);background:var(--midbg)}
+.opt.pick.s0,.opt.wrong{border-color:var(--red);background:var(--badbg)}
+.fb{border-radius:14px;padding:.7rem 1rem;margin:1rem 0 .5rem;max-width:720px;border:2px solid}
+.fb p{margin:.15rem 0 0}
+.fb.s2{background:var(--okbg);border-color:var(--green)}
+.fb.s1{background:var(--midbg);border-color:var(--orange)}
+.fb.s0{background:var(--badbg);border-color:var(--red)}
+.best{font-size:.92rem;color:var(--muted);margin-top:.35rem}
+.rule{display:flex;gap:.7rem;align-items:flex-start;background:var(--soft);border-radius:14px;padding:.7rem 1rem;margin:.9rem 0 .2rem;max-width:720px;border-inline-start:6px solid var(--gold)}
+.rule b{color:var(--royal)}
+:root[data-theme="dark"] .rule b{color:#AFC0FF}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .rule b{color:#AFC0FF}}
+
+.btn{border:0;border-radius:14px;padding:.65rem 1.3rem;font-weight:700;background:var(--gold);color:var(--navy)}
+.btn:hover{background:#f0c14f}
+.btn.sec{background:transparent;color:var(--royal);border:2px solid var(--royal)}
+:root[data-theme="dark"] .btn.sec{color:#AFC0FF;border-color:#AFC0FF}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .btn.sec{color:#AFC0FF;border-color:#AFC0FF}}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:.8rem;margin-top:1.4rem;padding-top:1rem;border-top:2px dashed var(--line)}
+.score{font-weight:700;color:var(--muted)}
+.score b{color:var(--orange);font-size:1.15rem}
+
+/* intro */
+.hero{display:grid;grid-template-columns:auto 1fr;gap:1.6rem;align-items:center}
+.hero .seal{width:190px;height:190px;border-radius:50%;padding:6px;background:conic-gradient(var(--gold),var(--orange),var(--violet),var(--royal),var(--gold));display:grid;place-items:center}
+.hero .seal img{width:100%;height:100%;border-radius:50%;background:#fff;display:block}
+.hero h2{font-size:2.6rem;margin-bottom:.2rem}
+.aud{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin:1rem 0;max-width:560px}
+.aud button{background:var(--soft);color:var(--ink);border:2px solid var(--line);border-radius:16px;padding:.8rem 1rem;text-align:start}
+.aud button b{display:block;font-size:1.1rem}
+.aud button span{font-size:.85rem;color:var(--muted)}
+.aud button[aria-pressed="true"]{border-color:var(--royal);background:var(--panel);box-shadow:0 0 0 3px rgba(31,69,201,.25)}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem;margin:.6rem 0 0}
+.chip{background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:.1rem .8rem;font-size:.85rem}
+
+/* password */
+.pwbox{display:flex;gap:.5rem;max-width:520px}
+.pwbox input{flex:1;font:inherit;font-size:1.1rem;padding:.7rem 1rem;border:2px solid var(--line);border-radius:14px;background:var(--panel);color:var(--ink);direction:ltr;text-align:left}
+.meter{height:14px;border-radius:999px;background:var(--line);max-width:520px;margin:.8rem 0 .3rem;overflow:hidden}
+.meter i{display:block;height:100%;width:0;background:var(--red);transition:width .25s,background .25s}
+.crit{list-style:none;padding:0;margin:.6rem 0;display:grid;gap:.25rem}
+.crit li::before{content:"○ ";color:var(--muted)}
+.crit li.ok::before{content:"● ";color:var(--green)}
+.crit li.ok{font-weight:700}
+.warn{font-size:.88rem;color:var(--muted)}
+
+/* sequence items */
+.item{background:var(--soft);border:2px solid var(--line);border-radius:18px;padding:1rem 1.2rem;margin:.6rem 0 1rem;max-width:720px;font-size:1.08rem}
+.item .cnt{font-size:.85rem;color:var(--muted);display:block;margin-bottom:.2rem}
+.row{display:flex;gap:.6rem;flex-wrap:wrap;max-width:720px}
+.row .opt{flex:1;min-width:150px;text-align:center;font-weight:700}
+.sum{text-align:center;padding:1.5rem 0}
+.sum .big{font-family:var(--f-display);font-size:3.5rem;color:var(--orange);line-height:1.1}
+
+/* balance */
+.sl{display:grid;grid-template-columns:110px 1fr 60px;gap:.6rem;align-items:center;max-width:620px;margin:.3rem 0}
+.sl input[type=range]{width:100%;accent-color:var(--royal)}
+.bar{display:flex;height:34px;border-radius:12px;overflow:hidden;max-width:620px;margin:1rem 0 .4rem;border:2px solid var(--line)}
+.bar div{display:grid;place-items:center;font-size:.72rem;color:#fff;white-space:nowrap;overflow:hidden;transition:flex .25s}
+.legend{display:flex;flex-wrap:wrap;gap:.3rem .9rem;font-size:.85rem;color:var(--muted)}
+.legend i{display:inline-block;width:.8rem;height:.8rem;border-radius:3px;margin-inline-end:.3rem;vertical-align:middle}
+
+/* end */
+.pledge{list-style:none;padding:0;margin:.6rem 0 1rem;display:grid;gap:.4rem;max-width:640px}
+.pledge label{display:flex;gap:.7rem;align-items:center;background:var(--soft);border:2px solid var(--line);border-radius:14px;padding:.55rem .9rem;cursor:pointer}
+.pledge input{width:1.2rem;height:1.2rem;accent-color:var(--green)}
+.pledge label:has(input:checked){border-color:var(--green);background:var(--okbg)}
+.cert{border:3px solid var(--gold);border-radius:20px;padding:1.2rem 1.4rem;background:linear-gradient(135deg,var(--soft),var(--panel));display:flex;gap:1.2rem;align-items:center;max-width:720px;margin:1rem 0}
+.cert img{width:92px;height:92px;border-radius:50%;border:3px solid var(--gold);background:#fff;flex:none}
+.cert h3{font-family:var(--f-display);font-weight:400;font-size:1.6rem;margin:0;color:var(--royal)}
+:root[data-theme="dark"] .cert h3{color:#AFC0FF}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .cert h3{color:#AFC0FF}}
+.cert input{font:inherit;padding:.4rem .8rem;border:2px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);min-width:200px}
+.help{background:var(--navy);color:#fff;border-radius:18px;padding:1rem 1.3rem;margin-top:1rem;max-width:720px}
+.help b{color:var(--gold)}
+.help ul{margin:.3rem 0 0;padding-inline-start:1.2rem}
+
+footer{max-width:980px;margin:0 auto 2rem;padding:0 1rem;text-align:center;color:var(--muted);font-size:.88rem}
+footer q{font-family:var(--f-display);font-size:1.15rem;color:var(--royal);quotes:"«" "»"}
+:root[data-theme="dark"] footer q{color:var(--gold)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) footer q{color:var(--gold)}}
+
+
+.info{background:var(--soft);border:2px solid var(--line);border-inline-start:6px solid var(--gold);border-radius:16px;padding:.6rem 1rem .9rem;margin:.6rem 0 1.1rem}
+.info summary{cursor:pointer;font-weight:800;color:var(--royal);padding:.2rem 0}
+:root[data-theme="dark"] .info summary{color:#AFC0FF}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .info summary{color:#AFC0FF}}
+.info .cols{display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem;margin-top:.5rem}
+.info .pr{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:.6rem .9rem}
+.info .pr b{color:var(--orange);display:block}
+.info .pr p{margin:.15rem 0 0;font-size:.97rem}
+.refs{font-size:.88rem;color:var(--muted);margin-top:1rem;max-width:720px}
+.refs ul{margin:.3rem 0 0;padding-inline-start:1.2rem}
+@media (max-width:760px){.info .cols{grid-template-columns:1fr}}
+#printcert{display:none}
+@media print{
+  body>*:not(#printcert){display:none!important}
+  #printcert{display:flex!important;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:95vh;border:10px double #E4B03A;padding:2rem;margin:0;color:#0E1B5C;background:#fff}
+  #printcert img{width:150px;height:150px;border-radius:50%;border:4px solid #E4B03A}
+  #printcert h1{font-family:var(--f-display);font-weight:400;font-size:3rem;margin:1rem 0 .3rem}
+  #printcert .nm{font-size:2.2rem;font-weight:800;border-bottom:3px solid #E4B03A;padding:0 2rem;margin:.6rem 0}
+  #printcert p{font-size:1.2rem;margin:.3rem 0}
+  #printcert .g{color:#0C7B3E;font-weight:700}
+}
+@media (max-width:640px){
+  .hero{grid-template-columns:1fr;justify-items:center;text-align:center}
+  .hero .seal{width:150px;height:150px}
+  .hero h2{font-size:2rem}
+  .aud{grid-template-columns:1fr}
+  .sl{grid-template-columns:90px 1fr 48px}
+  .cert{flex-direction:column;text-align:center}
+  .top h1{font-size:1.1rem}
+  h2{font-size:1.6rem}
+}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="stripe" aria-hidden="true"></div>
+<header class="top">
+  <div class="top-in">
+    <img src="data:image/jpeg;base64,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" alt="شعار ديوان قطاع الشباب والرياضة">
+    <div>
+      <h1>إنترنت آمن، جيل واعٍ</h1>
+      <small>ديوان قطاع الشباب والرياضة · حصة تحسيسية تفاعلية</small>
+    </div>
+    <div class="tools">
+      <button class="tbtn" id="bStage" aria-pressed="false" title="تكبير الخط للعرض أمام المجموعة">وضع العرض</button>
+      <button class="tbtn" id="bReset">إعادة البدء</button>
+    </div>
+  </div>
+</header>
+<nav class="track-wrap" aria-label="محطات الرحلة"><div class="track" id="track"></div></nav>
+<main><section class="card" id="app" aria-live="polite"></section></main>
+<footer>
+  <q>لنبني صروح الفكر، لا نكن معاول هدم</q>
+  <div>يمكن التنقل بين المحطات بأسهم لوحة المفاتيح</div>
+</footer>
+<div id="printcert"></div>
+
+<script>
+(function(){
+const LOGO="data:image/jpeg;base64,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";
+const $=s=>document.querySelector(s);
+const app=$('#app');
+
+const ST=[
+ {k:'intro',n:'البداية',ic:'★'},
+ {k:'pass',n:'كلمة السر',ic:'🔑'},
+ {k:'chat',n:'الاستدراج',ic:'💬'},
+ {k:'share',n:'خصوصيتي',ic:'📸'},
+ {k:'black',n:'الابتزاز',ic:'🚨'},
+ {k:'news',n:'إشاعة أم خبر',ic:'📰'},
+ {k:'bully',n:'التنمّر',ic:'🛡️'},
+ {k:'fraud',n:'الاحتيال',ic:'🎣'},
+ {k:'games',n:'الألعاب',ic:'🎮'},
+ {k:'law',n:'المسؤولية',ic:'⚖️'},
+ {k:'bal',n:'التوازن',ic:'🌿'},
+ {k:'end',n:'الميثاق',ic:'🏅'}
+];
+const MAXP={pass:3,chat:2,share:9,black:2,news:5,bully:2,fraud:5,games:5,law:5,bal:4};
+const TOTAL=Object.values(MAXP).reduce((a,b)=>a+b,0);
+
+let S;
+function fresh(){S={aud:'kids',i:0,pts:{},ans:{},q:{},cor:{},visited:{0:true},pledge:{},cardOpen:{},bal:{sleep:8,study:6,sport:1,screen:3}}}
+fresh();
+const sum=()=>Object.values(S.pts).reduce((a,b)=>a+b,0);
+const K=()=>S.aud==='kids';
+
+/* ---------- awareness cards ---------- */
+const L=['ما المقصود؟','كيف يظهر عندنا؟','كيف أحمي نفسي؟'];
+const CARDS={
+ pass:{t:'كلمة السر مفتاح حسابك',
+  kids:['كلمة السر مفتاح بيتك الرقمي. من يعرفها يدخل حسابك في اللعبة أو التطبيق ويتصرف باسمك.',
+        'يعرض عليك بعضهم «شحنًا مجانيًا» أو «تهكير» لاعب آخر مقابل كلمة سر حسابك. وقد يعرفها صديق ثم تحدث مقالب ومشاكل.',
+        'لا أعطيها لأحد إلا لوالديّ، وأجعلها جملة طويلة أحبها، ولا أكتبها في موقع وصلني رابطه من غريب.'],
+  youth:['اختراق حسابات فيسبوك وإنستغرام وتيك توك وواتساب يحدث غالبًا بخداعك لتعطي المعلومة بنفسك، لا ببرمجة معقدة.',
+        'يذكر مختصو الدرك الوطني القرصنة والتشهير من الجرائم الإلكترونية. ومن الحيل المعروفة أن يستولي أحدهم على حساب، ثم يراسل أصدقاء صاحبه طالبًا مالًا أو رصيدًا.',
+        'كلمة سر مختلفة لكل حساب مهم، والتحقق بخطوتين، ولا أشارك رمز التحقق الذي يصلني برسالة نصية. وأتجنب اسم فريقي المفضل أو 1954 أو 1962.']},
+ chat:{t:'الاستدراج: غريب يريد أن يصبح صديقك',
+  kids:['الاستدراج أن يتقرب منك شخص لا تعرفه، فيتظاهر بأنه صديق في عمرك، ثم يطلب معلومات أو صورًا أو لقاءً.',
+        'تدعو الجهات المهتمة بحماية الطفولة في الجزائر الأولياء إلى مرافقة أبنائهم ومتابعة ما يلعبون ويشاهدون. وكثيرًا ما يبدأ الغريب بهدية أو مساعدة في اللعبة.',
+        'لا أرد على الغرباء ولا أعطيهم اسمي ولا مدرستي ولا صوري. أحظر، وأخبر شخصًا بالغًا أثق به فورًا، وأتصل بالرقم الأخضر 1111 إذا خفت.'],
+  youth:['قد يقترب منك شخص عبر حساب مزيف، فيبني ثقتك أسابيع بالمجاملة والاهتمام، ثم ينقل الحديث إلى الخاص ويطلب صورًا أو مكالمة فيديو.',
+        'تُبرز حملات التوعية التي أطلقتها مصالح الأمن الاستدراج عبر مواقع التواصل، لأنه مدخل للنصب والابتزاز والتشهير.',
+        'لا أثق بحساب لم ألتقِ صاحبه، ولا أرسل صورًا خاصة لأحد مهما بلغت الثقة، وأتوقف عند طلب السرية أو الاستعجال.']},
+ share:{t:'خصوصيتي: من يرى ماذا؟',
+  kids:['معلوماتي وصوري تكشف من أنا، وأين أسكن، وأين أدرس.',
+        'صورة بزيّ المدرسة أو أمام باب العمارة تبدو بريئة، لكنها تدل الغريب على أين تدرس وأين تسكن.',
+        'أجعل حسابي خاصًا، وأقبل أصدقاء أعرفهم في الواقع فقط، ولا أنشر اسمي الكامل ولا مدرستي ولا عنواني ولا هاتفي.'],
+  youth:['ما تنشره يُجمع ويُحفظ ويُستعمل، لتتبعك أو انتحال هويتك أو ابتزازك.',
+        'تحذر قيادة الدرك الوطني والأمن الوطني من الإفصاح عن أي معلومات شخصية أو مصرفية لأي شخص مهما كانت صفته المعلنة. وصور بطاقة التعريف والبطاقة الذهبية وكشف النقاط تحمل بياناتك.',
+        'أراجع إعدادات الخصوصية، وأوقف مشاركة الموقع، وأقلل التفاصيل، وأحذف ما لن أرضى به بعد سنة.']},
+ black:{t:'الابتزاز الإلكتروني: لا تخف، وأخبر من تثق به',
+  kids:['الابتزاز أن يهددك شخص بنشر صورة أو كلام لك إذا لم تفعل ما يطلبه. المبتز هو المخطئ دائمًا، لا أنت.',
+        'تصنّف الجهات الأمنية التهديد والابتزاز والتشهير ضمن الجرائم الإلكترونية. والرقم الأخضر 1111 مجاني ومفتوح ليلًا ونهارًا، ولا يتحمل المُبلّغ أي مسؤولية.',
+        'لا أرد ولا أعطيه شيئًا، أصوّر الشاشة، وأخبر أمي أو أبي أو معلمي فورًا، ويمكن الاتصال بـ 1111.'],
+  youth:['الابتزاز الإلكتروني تهديد بنشر صور أو معلومات خاصة للحصول على مال أو لتنفيذ طلبات. ويبدأ غالبًا بصورة أُرسلت بثقة، أو بحساب تم اختراقه.',
+        'يضع مختصو الدرك الوطني الابتزاز والتهديد والتشهير والمساس بالحياة الخاصة في مقدمة الجرائم الإلكترونية، وقد أُعلن عن قطب وطني قضائي متخصص في مكافحتها.',
+        'لا أدفع ولا أستجيب، فالدفع يجلب طلبات أخرى. أحتفظ بالأدلة (لقطات، أرقام، روابط)، وأبلغ الشرطة (1548) أو الدرك (1055) دون أن أنبّه المبتز، وأخبر بالغًا موثوقًا.']},
+ news:{t:'الأخبار الزائفة والإشاعات',
+  kids:['الإشاعة خبر بلا دليل ينتشر بسرعة، وقد يخيف الناس أو يؤذيهم.',
+        'تصلنا أحيانًا رسائل تقول «شارك وإلا…» أو أخبار عن إغلاق المدارس أو عطل أو مسابقات، وتنتشر قبل أن يتأكد منها أحد.',
+        'لا أشارك قبل أن أسأل معلمي أو والديّ، وأتأكد من الجهة الرسمية.'],
+  youth:['الأخبار الزائفة صور ومقاطع وأخبار مضللة تُنشر لإثارة الجدل أو جني المشاهدات أو الاحتيال.',
+        'يعدّ مختصو الدرك الوطني نشر المعلومات الزائفة والمضللة من الجرائم الإلكترونية. وكثيرًا ما تنتشر إشاعات عن الامتحانات وتسريب المواضيع والمنح، أو حوادث بصور قديمة.',
+        'أتحقق من المصدر والتاريخ، وأبحث عن الخبر في قنوات رسمية (صفحات الوزارات ووكالة الأنباء الجزائرية)، وأستعمل البحث العكسي عن الصور.']},
+ bully:{t:'التنمّر والتشهير الإلكتروني',
+  kids:['التنمر الإلكتروني أن يؤذيك أحدهم أو يسخر منك أو يقصيك عبر الهاتف والألعاب والمجموعات، وتنتشر الصورة أو الكلمة بسرعة.',
+        'قد يحدث في مجموعة القسم أو الحي أو اللعبة: سخرية من الشكل أو اللهجة أو الفريق، أو نشر صورة محرجة، أو إخراج أحدهم من المجموعة.',
+        'لا أشارك ولا أضحك، أدعم زميلي، وأخبر معلمي أو والديّ، ويمكن الاتصال بالرقم الأخضر 1111.'],
+  youth:['التنمر والتشهير الإلكتروني إهانة أو سخرية أو نشر صور ومعلومات تسيء لشخص أمام جمهور واسع.',
+        'يذكر مختصو الدرك الوطني التشهير والمساس بالحياة الخاصة والتحرش الإلكتروني ضمن الجرائم الإلكترونية، فمن ينشر أو يعلّق ساخرًا قد يكون شريكًا في الأذى.',
+        'أتوقف عن التفاعل، أوثّق، أبلّغ عن المحتوى، وأدعم الضحية، وأحترم خصوصية الآخرين.']},
+ fraud:{t:'الاحتيال المالي وانتحال الصفة',
+  kids:['المحتالون يوهمونك بهدية أو ربح ليأخذوا كلمة سرك أو رمز الشحن.',
+        'من الشائع في الألعاب: «شحن جواهر رخيص» أو «ربحت رصيدًا من متعامل الهاتف» مقابل رمز الشحن أو كلمة سر حسابك.',
+        'لا أفتح روابط الغرباء، ولا أعطي رمز شحن ولا بيانات بطاقة والديّ، وأسأل والديّ أولًا.'],
+  youth:['الاحتيال الإلكتروني خداع للحصول على المال أو بيانات البطاقة أو الحساب البريدي، بروابط مزيفة أو بانتحال صفة جهات رسمية.',
+        'حذّرت قيادة الدرك الوطني والمديرية العامة للأمن الوطني من أشخاص ينتحلون صفة أفرادهما ويطلبون بيانات البطاقة الذهبية أو الحسابات البريدية، وأكدتا أن وحداتهما لا تطلب ذلك إطلاقًا.',
+        'لا أعطي رقم البطاقة الذهبية ولا الرقم السري ولا رمز التحقق لأحد مهما كانت صفته. أوقف المحادثة، وأتصل بالجهة من رقمها الرسمي، وأبلّغ الدرك أو الشرطة.']},
+ games:{t:'الألعاب الإلكترونية والتحديات',
+  kids:['الألعاب ممتعة، لكن فيها دردشة مع غرباء وعمليات شراء ومحتوى عنيف وتحديات خطرة.',
+        'ينبّه المختصون في الجزائر إلى مخاطر الاستغلال والابتزاز عبر الإنترنت، ويدعون الأولياء إلى مرافقة أبنائهم ومتابعة ما يلعبون.',
+        'ألعب وقتًا محددًا، وأدردش مع أصدقائي الذين أعرفهم فقط، وأسأل والديّ قبل أي شراء، ولا أشارك في تحدٍّ يؤذيني.'],
+  youth:['شحن رخيص، مراهنات، وإعلانات مؤثرين: كلها مدخل لاحتيال وإدمان وخسارة مال.',
+        'تنتشر في منصات التواصل حسابات تبيع شحنًا رخيصًا للألعاب، وإعلانات لمواقع مراهنة وقمار إلكتروني تعد بربح «مضمون».',
+        'أشحن من المتجر الرسمي للعبة فقط، وأتجنب مواقع المراهنة، وأفعّل التحقق بخطوتين، وأراقب وقتي ومصروفي.']},
+ law:{t:'ما أنشره يحاسبني عليه',
+  kids:['كل ما أرسله وأنشره يبقى، وقد يؤذي غيري حتى لو كان مزحة.',
+        'صور زملائك وأصواتهم ومحادثاتهم لهم، ولا يحق لك نشرها دون إذنهم وإذن أوليائهم.',
+        'أسأل قبل أن أنشر صورة تجمعني بغيري، ولا أنتحل اسم أحد، وأخبر معلمي إذا رأيت من يهدد أحدًا.'],
+  youth:['الفضاء الرقمي ليس خارج القانون: ما تنشره أو تعلق به أو تعيد نشره قد تُحاسَب عليه.',
+        'يذكر مختصو الدرك الوطني ضمن الجرائم الإلكترونية: التشهير، ونشر المعلومات الزائفة والمضللة، والمساس بالحياة الخاصة، والتحرش الإلكتروني. وللجزائر قانون خاص بالوقاية من الجرائم المتصلة بتكنولوجيات الإعلام والاتصال (القانون 09-04).',
+        'أتحقق قبل أن أنشر، وأحترم خصوصية غيري، ولا أنتحل هوية أحد، وأعبّر عن رأيي باحترام.']},
+ bal:{t:'التوازن الرقمي',
+  kids:['الشاشة جزء من يومك فقط. الجسم يحتاج نومًا وحركة، والقلب يحتاج أهله وأصدقاءه.',
+        'السهر على الهاتف يسرق النوم قبل المدرسة، والألعاب الطويلة تسرق وقت المراجعة واللعب في الحي.',
+        'أحدد وقتًا للعب، وأطفئ الهاتف قبل النوم بساعة، وأمارس رياضة أو هواية.'],
+  youth:['الإفراط في الشاشات يؤثر على النوم والتحصيل والمزاج، وقد يتحول إلى إدمان.',
+        'في دور الشباب والنوادي أنشطة رياضية وثقافية وتطوعية تمنحك بديلًا مفيدًا وصداقات حقيقية.',
+        'أضع حدودًا لوقتي، وأعطّل الإشعارات ليلًا، وأنخرط في نشاط رياضي أو ثقافي أو تطوعي.']}
+};
+function card(key){
+  const c=CARDS[key],p=c[S.aud],open=S.cardOpen[key]!==false;
+  return `<details class="info" data-card="${key}" ${open?'open':''}><summary>📖 بطاقة توعوية: ${c.t}</summary><div class="cols">${p.map((x,i)=>`<div class="pr"><b>${L[i]}</b><p>${x}</p></div>`).join('')}</div></details>`;
+}
+
+/* ---------- scenarios ---------- */
+const CHAT={
+ kids:{ctx:'أنت تلعب لعبتك المفضلة مع لاعبين من ولايات مختلفة، وتصلك رسالة خاصة من لاعب لا تعرفه:',
+  msg:'مرحبا! أنا من ولايتك وفي عمرك 😊 لعبك رائع. أعطني رقم هاتفك وسأشحن لك جواهر مجانًا، لكن لا تخبر أحدًا، ستكون مفاجأة!',
+  opts:[
+   {t:'أعطيه رقم هاتفي لأربح الجواهر',s:0,f:'خطر! رقم هاتفك قد يُستعمل لمراسلتك ومتابعتك. لا أحد يعرف من يقف حقًا وراء الشاشة، وطلب إبقاء الأمر سرًّا علامة إنذار كبيرة.'},
+   {t:'لا أرد، أحظر اللاعب، وأخبر أمي أو أبي أو معلمي',s:2,f:'تصرف ممتاز! توقّف، احظر، وأخبر شخصًا بالغًا تثق به. وإذا خفت يمكنكم الاتصال بالرقم الأخضر 1111.'},
+   {t:'أسأله: من أنت؟ وفي أي حي تسكن؟',s:1,f:'فكرة الحذر جيدة، لكن الغريب قد يكذب في كل جواب. الأفضل ألا تدخل معه في حديث أصلًا.'}
+  ]},
+ youth:{ctx:'أضافك على إنستغرام حساب لا تعرفه، وتحدثتما يوميًا منذ أسبوعين. فجأة يكتب:',
+  msg:'أشعر أنني أثق بك أكثر من أي أحد 💙 هيا نكمل على مكالمة فيديو خاصة، وأرسل لي صورتك دون تعديل. أعدك أن يبقى الأمر سرًّا بيننا.',
+  opts:[
+   {t:'أوافق، فقد صرنا نعرف بعضنا جيدًا',s:0,f:'الثقة الرقمية ليست معرفة حقيقية. الصور والمقاطع قد تُسجَّل وتُستعمل لاحقًا في الابتزاز.'},
+   {t:'أرسل صورة عادية فقط لأختبره',s:1,f:'حذرك واضح، لكن أي صورة تعطيها تصبح في يده. الأفضل ألا تعطيه شيئًا.'},
+   {t:'أرفض، أوقف الحديث، أحظر الحساب، وأخبر شخصًا أثق به',s:2,f:'قرار سليم. طلب السرية والانتقال إلى الخاص وطلب الصور الخاصة مراحل معروفة من أسلوب الاستدراج.'}
+  ]}
+};
+const BLACK={
+ kids:{ctx:'لاعب تعرّفت عليه في اللعبة حصل على صورة لك، ثم يرسل:',
+  msg:'سأنشر صورتك في مجموعة القسم وأقول للجميع أشياء عنك، إن لم تعطني حسابك في اللعبة الآن!',
+  opts:[
+   {t:'أهدده بأنني سأخبر عنه',s:1,f:'شجاعتك جيدة، لكن لا تنبّهه ولا تدخل معه في مواجهة. الأفضل أن تخبر الكبار وتترك الأمر لهم.'},
+   {t:'أعطيه حسابي حتى لا ينشر شيئًا',s:0,f:'لن يتوقف، بل سيطلب المزيد. الاستجابة تشجع المبتز.'},
+   {t:'لا أرد، أصوّر الشاشة، أحظره، وأخبر والديّ فورًا',s:2,f:'ممتاز! المخطئ هو المبتز وليس أنت. تستطيع العائلة الاتصال بالرقم 1111 أو بالشرطة والدرك.'}
+  ]},
+ youth:{ctx:'يصلك من حساب مجهول:',
+  msg:'لدي صورتك التي أرسلتها. حوّل 20000 دج إلى حسابي البريدي خلال ساعة وإلا نشرتها عند عائلتك وأصدقائك.',
+  opts:[
+   {t:'أدفع المبلغ لأتخلص من المشكلة',s:0,f:'الدفع لا ينهي الابتزاز؛ يعرف المبتز أنك تدفع فيطلب أكثر.'},
+   {t:'أحذف الرسائل، أحظره، وأنسى الأمر',s:1,f:'الحظر جيد، لكن حذف الرسائل يضيّع الأدلة. وثّق أولًا، ثم بلّغ.'},
+   {t:'لا أدفع، أوثّق كل شيء، أبلغ الشرطة أو الدرك، وأخبر شخصًا بالغًا موثوقًا',s:2,f:'تصرف صحيح. الرسائل والحساب ورقم الحساب المطلوب أدلة تساعد المصالح المختصة على الوصول للمبتز.'}
+  ]}
+};
+const BULLY={
+ kids:{ctx:'في مجموعة القسم على تطبيق المراسلة، نشر أحدهم صورة مضحكة لزميلك وبدأ الجميع يسخرون من لهجته ومظهره:',
+  msg:'هههه انظروا إلى هذه الصورة! أعيدوا إرسالها للجميع 😂',
+  opts:[
+   {t:'أضحك وأعيد إرسالها، الجميع يفعل ذلك',s:0,f:'إعادة الإرسال تجعلك شريكًا في الأذى. ما يبدو مزحة لك قد يجرح زميلك جرحًا عميقًا.'},
+   {t:'لا أشارك، أرسل لزميلي رسالة دعم، وأخبر معلمي أو والديّ',s:2,f:'رائع! أنت تصنع فرقًا حقيقيًا: كسر الصمت ودعم الضحية يوقف التنمر.'},
+   {t:'أرد عليهم بالشتم والسباب',s:1,f:'دفاعك عن زميلك نبيل، لكن الشتم يزيد النار اشتعالًا. الأفضل ألا تشارك، وتدعم زميلك، وتخبر شخصًا بالغًا.'}
+  ]},
+ youth:{ctx:'صفحة باسم مستعار على فيسبوك تنشر صورة زميل لك مع تعليقات ساخرة من لهجته ومظهره، والجميع يعلّق ويشارك:',
+  msg:'شاركوا المنشور حتى يعرفه كل الناس 😂',
+  opts:[
+   {t:'أعلّق بتعليق ساخر مثل الآخرين',s:0,f:'التعليق الساخر يجعلك شريكًا في التشهير، وقد يترتب عليه أثر نفسي وقانوني.'},
+   {t:'أوثّق المنشور، أبلّغ الصفحة، أدعم زميلي، وأنبّه بالغًا موثوقًا',s:2,f:'هذا هو الصواب. التوثيق والإبلاغ والدعم أهم ما يحمي الضحية.'},
+   {t:'أتجاهل، فالأمر لا يعنيني',s:1,f:'التجاهل أفضل من المشاركة، لكن الضحية تحتاج من يقف معها. الدعم والإبلاغ يصنعان الفرق.'}
+  ]}
+};
+const SC={chat:CHAT,black:BLACK,bully:BULLY};
+
+/* ---------- sequence questions ---------- */
+const SHARE=[
+ {t:'رأيك في مباراة شاهدتها أمس',c:0,f:'الرأي العام والهوايات آمنة للنقاش، مع احترام الآخرين.'},
+ {t:'رسمة أو مشروع أنجزته بنفسك',c:0,f:'أعمالك الإبداعية يمكن نشرها بفخر، مع الحرص ألا يظهر فيها ما يكشف بياناتك.'},
+ {t:'عنوان بيتك',c:2,f:'العنوان لا يُشارك مع أحد على الإنترنت أبدًا.'},
+ {t:'رمز التحقق الذي وصلك برسالة نصية',c:2,f:'هذا الرمز مفتاح حسابك. لا تعطه لأحد، حتى لو ادّعى أنه من الدعم الفني أو من صديق.'},
+ {t:'صورة البطاقة الذهبية أو معلومات حساب والديك البريدي',c:2,f:'لا تُصوَّر ولا تُرسل. الجهات الأمنية نفسها تؤكد أنها لا تطلبها أبدًا.'},
+ {t:'موقعك المباشر الآن',c:2,f:'مشاركة الموقع المباشر تعني أن أي شخص يعرف أين أنت في هذه اللحظة.'},
+ {t:'صورة بزيّ المدرسة يظهر فيها اسم مؤسستك',c:1,f:'اسأل أولًا: هذه الصورة تكشف مكان تواجدك اليومي. استشر شخصًا بالغًا قبل نشرها.'},
+ {t:'صورة مع أصدقائك بعد مباراة الحي',c:1,f:'اسأل أولًا: هل وافق أصدقاؤك؟ الموافقة شرط قبل النشر.'},
+ {t:'كشف النقاط أو شهادتك المدرسية',c:1,f:'قد تحمل اسمك ومؤسستك وبياناتك. اسأل شخصًا بالغًا وغطِّ البيانات الحساسة إن أردت مشاركتها.'}
+];
+const SHARE_B=[{t:'أشاركه',cl:'ok'},{t:'أسأل أولًا',cl:'mid'},{t:'لا يُشارك أبدًا',cl:'bad'}];
+
+const NEWS={
+ kids:[
+  {t:'رسالة متداولة: «من أرسلها لـ10 أصدقاء ربح رصيدًا مجانيًا وإلا حلّ به الحظ السيّئ»',c:1,f:'رسالة تضغط عليك لإعادة النشر بالوعد أو التخويف. الأخبار الصحيحة لا تهددك.'},
+  {t:'إعلان عن عطلة مدرسية على الصفحة الرسمية لوزارة التربية، ويخبرك به معلمك في القسم',c:0,f:'مصدر رسمي معروف، وتأكدت منه من شخص تعرفه.'},
+  {t:'فيديو من حساب مجهول: «غدًا لا مدرسة بأمر من الوالي!»',c:1,f:'قرارات كهذه تُعلن عبر القنوات الرسمية وإدارة المؤسسة، لا عبر حساب مجهول.'},
+  {t:'صورة مذهلة لحيوان غريب ظهر في مدينتك، دون ذكر أي مصدر',c:1,f:'صورة بلا مصدر ولا تاريخ. قد تكون مركّبة بالحاسوب.'},
+  {t:'معلومة في كتابك المدرسي أو موقع علمي معروف للأطفال: الماء يغلي عند 100 درجة مئوية عند مستوى سطح البحر',c:0,f:'معلومة علمية من مصدر معروف ومتوافقة مع ما تدرسه.'}
+ ],
+ youth:[
+  {t:'صفحة مجهولة: «تسريب مواضيع الامتحان قبل موعده! شارك ليصل إلى الجميع!»',c:1,f:'خبر مثير بلا مصدر ويطلب المشاركة. تأكد من بيانات الوزارة والمؤسسة التعليمية قبل أي تصديق.'},
+  {t:'بيان على الصفحة الموثّقة لمؤسسة رسمية، ويظهر مثله في موقعها الرسمي ووكالة الأنباء الجزائرية',c:0,f:'تعدد القنوات الرسمية المتطابقة مؤشر جيد. تحقق دائمًا من عنوان الموقع.'},
+  {t:'إعلان: «منحة مالية لكل الشباب! سجّل بياناتك في هذا الرابط»',c:1,f:'منحة عامة بلا جهة معلنة ورابط يجمع بياناتك: إما إشاعة أو فخ احتيال.'},
+  {t:'فيديو لحادث قيل إنه وقع اليوم في ولايتك. وبالبحث العكسي عن الصورة تبيّن أنه قديم ومن بلد آخر',c:1,f:'تضليل بمشهد قديم في سياق جديد. البحث العكسي عن الصور أداة تحقق ممتازة.'},
+  {t:'تقرير إحصائي من هيئة رسمية، منشور مع رابط المصدر والتاريخ وطريقة جمع البيانات',c:0,f:'الشفافية في المصدر والتاريخ والمنهجية من علامات المعلومة الموثوقة.'}
+ ]
+};
+const NEWS_B=[{t:'موثوق',cl:'ok'},{t:'مشكوك فيه',cl:'bad'}];
+
+const FRAUD={
+ kids:[
+  {t:'🎁 «مبروك! ربحت 5 غيغا من متعامل الهاتف. أرسل لنا رمز بطاقة الشحن لنضيف الجائزة»',c:1,f:'هدية مفاجئة + طلب رمز الشحن = احتيال.'},
+  {t:'رسالة معلمك في مجموعة القسم الرسمية: «واجب الغد: الصفحة 40، التمرين 3»',c:0,f:'مصدر معروف في مجموعة تعرفها، ولا يطلب شيئًا خطيرًا.'},
+  {t:'لاعب في اللعبة: «أشحن لك 1000 جوهرة بنصف الثمن، فقط أعطني كلمة سر حسابك»',c:1,f:'لا أحد يشحن حسابك إن أعطيته كلمة سرك. سيسرق الحساب.'},
+  {t:'والدك يشتري لك اشتراكًا في المتجر الرسمي للعبة وأنتما معًا',c:0,f:'شراء بإشراف الوالدين ومن متجر رسمي: طريقة آمنة.'},
+  {t:'رابط: «برنامج تهكير يعطيك أسلحة مجانية، أدخل حسابك لتفعيله»',c:1,f:'هذه فخاخ لسرقة الحسابات. لا يوجد «تهكير» مجاني آمن.'}
+ ],
+ youth:[
+  {t:'رسالة: «الدرك الوطني: يوجد ملف باسمك، أرسل بيانات بطاقتك الذهبية لتسوية وضعيتك فورًا»',c:1,f:'الدرك والأمن لا يطلبان أبدًا بيانات البطاقة الذهبية أو الرقم السري. هذا انتحال صفة.'},
+  {t:'رسالة نصية: «حسابك البريدي مجمَّد! ادخل الرابط وأدخل رقم البطاقة والرمز السري»، والرابط ليس عنوان الموقع الرسمي المعروف',c:1,f:'رابط مزيف يستعمل اسم مؤسسة معروفة. تواصل معها من رقمها أو موقعها الرسمي المعروف.'},
+  {t:'صفحة على فيسبوك: «هاتف بنصف الثمن، حوّل تسبقة عبر البريد، ولا نلتقي ولا دفع عند الاستلام»',c:1,f:'سعر مغرٍ + تسبقة + رفض المعاينة = علامات احتيال شائع في البيع عبر الإنترنت.'},
+  {t:'إعلان بيع في منصة معروفة: تعاين المنتج في مكان عام مع شخص بالغ وتدفع عند الاستلام',c:0,f:'المعاينة قبل الدفع في مكان عام طريقة أكثر أمانًا.'},
+  {t:'«عرض عمل في الخارج مع تأشيرة مضمونة، ادفع مبلغًا مسبقًا لتفتح ملفك»',c:1,f:'الشركات الجادة لا تبيع التأشيرات. تحقق من الجهة عبر قنواتها الرسمية.'}
+ ]
+};
+const FRAUD_B=[{t:'رسالة سليمة',cl:'ok'},{t:'احتيال',cl:'bad'}];
+
+const OK_B=[{t:'تصرف سليم',cl:'ok'},{t:'تصرف خاطئ',cl:'bad'}];
+const GAMES={
+ kids:[
+  {t:'تقبل دعوة لاعب مجهول إلى مجموعة خاصة على تطبيق آخر',c:1,f:'الانتقال إلى مجموعة خاصة مع غريب خطوة معروفة في الاستدراج.'},
+  {t:'تسأل والديك قبل أي عملية شراء أو شحن داخل اللعبة',c:0,f:'ممتاز. الشراء بعلم الأولياء يحميك ويحمي مالهم.'},
+  {t:'تشارك في «تحدٍّ» منتشر يطلب منك فعلًا خطيرًا لتحصل على إعجابات',c:1,f:'لا إعجابات تستحق أن تؤذي نفسك. أخبر شخصًا بالغًا عن هذه التحديات.'},
+  {t:'تحدد وقتًا يومياً للعب وتتوقف عنده',c:0,f:'التوقف في الوقت المحدد يحمي نومك ودراستك.'},
+  {t:'تكتب رقم بطاقة والدك الذهبية في موقع يبيع جواهر رخيصة',c:1,f:'بيانات البطاقة لا تُكتب في أي موقع غير موثوق، ولا يفعل ذلك الأطفال أبدًا.'}
+ ],
+ youth:[
+  {t:'تشحن حسابك في لعبة عبر وسيط مجهول على فيسبوك لأن السعر أرخص',c:1,f:'قد يختفي الوسيط بعد الدفع أو يسرق حسابك. اشحن من المتجر الرسمي.'},
+  {t:'تتجاهل إعلان مؤثر يروّج لموقع مراهنات «ربح مضمون»',c:0,f:'لا يوجد ربح مضمون في القمار الإلكتروني. تجاهله أو بلّغ عن الإعلان.'},
+  {t:'تتحقق من أن الشحن يتم عبر المتجر الرسمي للعبة',c:0,f:'الشحن الرسمي يحمي حسابك ومالك.'},
+  {t:'تسجل في موقع مراهنات «بمكافأة ترحيب» لأن الجميع يفعل',c:1,f:'المكافأة طعم. الخسارة المالية والإدمان أخطر ما فيه.'},
+  {t:'تفعّل التحقق بخطوتين على حساب لعبتك لأن فيه مشترياتك',c:0,f:'التحقق بخطوتين طبقة حماية ثانية مهمة.'}
+ ]
+};
+const LAW={
+ kids:[
+  {t:'تنشر صورة زميل وهو يبكي وتضحك عليه',c:1,f:'هذا أذى لزميلك، وصورته له وليست لك.'},
+  {t:'تسأل زميلك قبل أن تنشر صورة تجمعكما',c:0,f:'الاستئذان علامة احترام وأمان.'},
+  {t:'تنشئ حسابًا باسم شخص آخر لتمزح معه',c:1,f:'انتحال اسم شخص آخر ليس مزحة، وقد يسبب له مشاكل كبيرة.'},
+  {t:'تخبر معلمك إذا رأيت من يهدد أحدًا على الإنترنت',c:0,f:'الإخبار ليس وشاية؛ هو مساعدة تحمي زميلك.'},
+  {t:'تعيد نشر تسجيل صوتي لمعلمك دون علمه لأنه مضحك',c:1,f:'لا يجوز نشر صوت أحد أو صورته دون علمه.'}
+ ],
+ youth:[
+  {t:'تنشر صورة زميل أو زميلة دون علمه لتسخر منه',c:1,f:'ذلك مساس بالحياة الخاصة وتشهير، وقد تترتب عليه مسؤولية قانونية.'},
+  {t:'تعيد نشر خبر مثير قبل التحقق لأنه «عاجل»',c:1,f:'نشر المعلومات الزائفة والمضللة من الجرائم الإلكترونية. تحقق ثم انشر.'},
+  {t:'تبلّغ عن حساب ينشر تهديدات بدل الرد عليه',c:0,f:'الإبلاغ أفضل من الرد. وثّق ثم بلّغ المنصة والجهات المختصة.'},
+  {t:'تكتب رأيك بأسلوب محترم دون شتم أو تشهير',c:0,f:'حرية التعبير تعني الاحترام لا التجريح.'},
+  {t:'تستعمل حسابًا مزيفًا باسم شخص آخر لمضايقته',c:1,f:'انتحال الهوية والمضايقة الإلكترونية سلوكان مجرَّمان وضارّان.'}
+ ]
+};
+const SEQ={
+ share:{items:()=>SHARE,btns:SHARE_B},
+ news:{items:()=>NEWS[S.aud],btns:NEWS_B},
+ fraud:{items:()=>FRAUD[S.aud],btns:FRAUD_B},
+ games:{items:()=>GAMES[S.aud],btns:OK_B},
+ law:{items:()=>LAW[S.aud],btns:OK_B}
+};
+
+const COMMON=['123456','12345678','password','azerty','qwerty','0000','1234','algerie','algeria','dzair','djazair','dz1234','motdepasse','bismillah','000000','111111','123456789','1954','1962','5juillet','mahrez','usma','jsk','mca','crb','madrid','barca','allah','rabi'];
+const PLEDGE=[
+ 'لن أشارك كلمة سري ولا رمز التحقق مع أحد، ولن أستعمل الكلمة نفسها في كل حساباتي',
+ 'لن أرد على الغرباء، وسأخبر شخصًا أثق به عندما يزعجني أحد',
+ 'سأفكر قبل أن أنشر: هل يمكن أن أندم على هذا بعد سنة؟',
+ 'لن أدفع لمبتز ولن أرد عليه، وسأوثّق وأخبر الكبار وأبلّغ',
+ 'سأتحقق من الخبر قبل أن أشاركه، ولن أعطي بيانات بطاقتي لأحد',
+ 'لن أشارك في التنمر، وسأدعم من يتعرض له، وسأترك وقتًا للنوم والرياضة والأهل'
+];
+
+/* ---------- helpers ---------- */
+function award(key,v){S.pts[key]=v;updScore()}
+function updScore(){const e=$('#sc');if(e)e.textContent=sum()}
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const rule=(t,b)=>`<div class="rule"><span aria-hidden="true">💡</span><div><b>${b}</b> ${t}</div></div>`;
+
+function scen(key,d){
+  const a=S.ans[key];
+  const best=d.opts.find(o=>o.s===2);
+  let h=`<p class="ctx">${d.ctx}</p><div class="bubble">${d.msg}</div><div class="opts">`;
+  d.opts.forEach((o,i)=>{
+    h+=`<button class="opt ${a!==undefined?(i===a?'pick s'+o.s:'dim'):''}" data-act="pick" data-key="${key}" data-i="${i}" ${a!==undefined?'disabled':''}>${o.t}</button>`;
+  });
+  h+='</div>';
+  if(a!==undefined){
+    const o=d.opts[a];
+    h+=`<div class="fb s${o.s}"><b>${['⚠️ انتبه','👍 قريب من الصواب','✅ أحسنت'][o.s]}</b><p>${o.f}</p>${o.s<2?`<p class="best">التصرف الأمثل: ${best.t}</p>`:''}</div>`;
+    h+=`<button class="btn sec" data-act="retry" data-key="${key}">جرّب خيارًا آخر</button>`;
+  }
+  return h;
+}
+function seq(key){
+  const items=SEQ[key].items(),btns=SEQ[key].btns;
+  const q=S.q[key]||0,n=items.length,c=S.cor[key]||0;
+  if(q>=n){
+    const msg=c===n?'ممتاز! لم تخطئ ولا مرة.':c>=n-1?'رائع! أنت قريب من الإتقان.':'بداية جيدة. أعد المحاولة لتحسّن نتيجتك.';
+    return `<div class="sum"><div class="big">${c} / ${n}</div><p>${msg}</p><button class="btn sec" data-act="redo" data-key="${key}">أعد المحاولة</button></div>`;
+  }
+  const it=items[q],a=S.ans[key+q];
+  let h=`<div class="item"><span class="cnt">السؤال ${q+1} من ${n}</span>${it.t}</div><div class="row">`;
+  btns.forEach((b,i)=>{
+    let cls='';
+    if(a!==undefined){cls=i===it.c?'right':(i===a?'wrong':'dim')}
+    h+=`<button class="opt ${cls}" data-act="sans" data-key="${key}" data-b="${i}" ${a!==undefined?'disabled':''}>${b.t}</button>`;
+  });
+  h+='</div>';
+  if(a!==undefined){
+    const ok=a===it.c;
+    h+=`<div class="fb ${ok?'s2':'s0'}"><b>${ok?'✅ إجابة صحيحة':'⚠️ ليس تمامًا'}</b><p>${it.f}</p></div><button class="btn" data-act="snext" data-key="${key}">${q+1<n?'التالي':'عرض النتيجة'}</button>`;
+  }
+  return h;
+}
+const H=(n,t,l)=>`<h2>${n}: ${t}</h2><p class="lead">${l}</p>`;
+
+/* ---------- stations ---------- */
+const VIEW={
+ intro(){
+  return `<div class="hero">
+   <div class="seal"><img src="${LOGO}" alt="شعار ديوان قطاع الشباب والرياضة"></div>
+   <div>
+    <h2>إنترنت آمن، جيل واعٍ</h2>
+    <p class="lead">رحلة من عشر محطات: بطاقة توعوية في كل محطة، ثم أسئلة وسيناريوهات من واقعنا في الجزائر. نجرّب، نقرّر، ونتعلّم من نتيجة قراراتنا.</p>
+    <p class="ctx">من يشارك اليوم؟</p>
+    <div class="aud">
+      <button data-act="aud" data-v="kids" aria-pressed="${K()}"><b>الأطفال</b><span>سيناريوهات وألعاب بلغة بسيطة</span></button>
+      <button data-act="aud" data-v="youth" aria-pressed="${!K()}"><b>الشباب</b><span>احتيال، ابتزاز، سمعة رقمية</span></button>
+    </div>
+    <div class="chips"><span class="chip">🔑 كلمات السر</span><span class="chip">💬 الاستدراج</span><span class="chip">📸 الخصوصية</span><span class="chip">🚨 الابتزاز</span><span class="chip">📰 الإشاعات</span><span class="chip">🛡️ التنمر</span><span class="chip">🎣 الاحتيال</span><span class="chip">🎮 الألعاب</span><span class="chip">⚖️ المسؤولية</span><span class="chip">🌿 التوازن</span></div>
+   </div>
+  </div>`;
+ },
+ pass(){
+  return H('المحطة الأولى','مختبر كلمة السر','اقرأ البطاقة، ثم اكتب كلمة سر تجريبية ولاحظ كيف تقوى. <b>تنبيه:</b> لا تكتب كلمة سرك الحقيقية هنا أبدًا.')+card('pass')+`
+  <div class="pwbox"><input id="pw" type="text" dir="ltr" autocomplete="off" spellcheck="false" placeholder="جرّب: Ahibb_Aldjazair2030!" aria-label="كلمة سر تجريبية"><button class="tbtn" style="color:var(--royal);border-color:var(--royal);background:none" id="pwShow" aria-pressed="false">إخفاء</button></div>
+  <div class="meter" role="progressbar" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0" id="mt"><i id="mi"></i></div>
+  <div id="ml" class="ctx">ابدأ بالكتابة…</div>
+  <ul class="crit" id="cr"></ul>
+  ${rule(K()?'اصنع جملة سرية طويلة تحبها، ثم بدّل بعض حروفها برقم أو رمز. الطول أهم من التعقيد!':'كلمة سر طويلة (جملة من 4 كلمات أو أكثر) أقوى من كلمة قصيرة معقدة. تجنب اسم فريقك أو سنة شهيرة مثل 1962.','قاعدة الجملة السرية:')}
+  ${rule(K()?'اطلب من والديك تفعيل «التحقق بخطوتين» على حساباتك.':'فعّل «التحقق بخطوتين» على البريد وحسابات التواصل، فهو يحمي حسابك حتى لو سُرقت كلمة السر.','طبقة حماية ثانية:')}`;
+ },
+ chat(){
+  return H('المحطة الثانية','غريب يراسلك','اقرأ البطاقة، ثم اقرأ الرسالة جيدًا واختر ما ستفعله.')+card('chat')+scen('chat',CHAT[S.aud])+
+   rule(K()?'هدية مقابل معلومات · طلب هاتف أو صورة · «لا تخبر أحدًا».':'مجاملة زائدة · طلب السرية · الانتقال إلى الخاص · طلب صور أو مكالمة فيديو.','علامات الإنذار:');
+ },
+ share(){
+  return H('المحطة الثالثة','ماذا أشارك؟','لكل معلومة ثلاثة أحكام: أشاركه، أسأل أولًا، أو لا يُشارك أبدًا. صنّف كل بند.')+card('share')+seq('share')+
+   rule('أخضر: يمكن نشره · برتقالي: اسأل شخصًا بالغًا أولًا · أحمر: لا يُنشر أبدًا.','إشارة المرور:');
+ },
+ black(){
+  return H('المحطة الرابعة','الابتزاز: ماذا أفعل؟','اقرأ البطاقة أولًا، ثم اختر التصرف الصحيح.')+card('black')+scen('black',BLACK[S.aud])+
+   `<div class="help" style="margin-top:1rem"><b>تذكّر:</b> الضحية لا تخطئ. المبتز هو المخطئ.<ul><li>الرقم الأخضر للطفولة: <b>1111</b> (مجاني، ليلًا ونهارًا)</li><li>الشرطة: <b>1548</b> · الدرك الوطني: <b>1055</b></li></ul></div>`;
+ },
+ news(){
+  return H('المحطة الخامسة','خبر أم إشاعة؟','اقرأ البطاقة، ثم قرّر لكل خبر: تصدّقه وتنشره، أم تتوقف وتتحقق؟')+card('news')+seq('news')+
+   rule('من نشره؟ متى؟ هل ذُكر المصدر؟ وهل أجد الخبر نفسه عند جهة رسمية أخرى؟','أسئلة التحقق الأربعة:');
+ },
+ bully(){
+  return H('المحطة السادسة','أنا لست متفرجًا','التنمر الإلكتروني يؤذي حقًا. ماذا تفعل عندما تراه؟')+card('bully')+scen('bully',BULLY[S.aud])+
+   rule('توقّف، لا ترد بانفعال · وثّق بلقطة شاشة · أبلغ المنصة واطلب مساعدة شخص بالغ موثوق.','ثلاث خطوات:');
+ },
+ fraud(){
+  return H('المحطة السابعة','رسالة سليمة أم احتيال؟','اقرأ البطاقة، ثم صنّف كل رسالة أو عرض.')+card('fraud')+seq('fraud')+
+   rule('هدية مفاجئة · استعجال · طلب كلمة سر أو بيانات بطاقة · رابط غريب · انتحال صفة جهة رسمية.','علامات الاحتيال:');
+ },
+ games(){
+  return H('المحطة الثامنة','الألعاب والتحديات','اقرأ البطاقة، ثم احكم على كل تصرف: سليم أم خاطئ؟')+card('games')+seq('games');
+ },
+ law(){
+  return H('المحطة التاسعة','ما أنشره يحاسبني','اقرأ البطاقة، ثم احكم على كل تصرف: سليم أم خاطئ؟')+card('law')+seq('law');
+ },
+ bal(){
+  return H('المحطة العاشرة','توازن يومي','وزّع ساعات يومك النموذجي. الوقت الباقي للأكل والأهل والأصدقاء والراحة.')+card('bal')+`<div id="bl"></div>`;
+ },
+ end(){
+  const p=sum(),pct=Math.round(p/TOTAL*100);
+  const left=ST.slice(1,-1).filter(s=>S.pts[s.k]===undefined);
+  const lvl=lvlOf(pct);
+  return `<h2>الميثاق والنتيجة</h2>
+  <p class="lead">نتيجتك: <b style="color:var(--orange);font-size:1.4rem">${p} / ${TOTAL}</b> — المستوى: <b>${lvl}</b></p>
+  ${left.length?`<p>لم تكمل بعد: ${left.map(s=>`<button class="chip" data-act="go" data-i="${ST.indexOf(s)}">${s.ic} ${s.n}</button>`).join(' ')}</p>`:''}
+  <p class="ctx">ميثاقي الرقمي — ضع علامة على ما تلتزم به:</p>
+  <ul class="pledge">${PLEDGE.map((t,i)=>`<li><label><input type="checkbox" data-act="pl" data-i="${i}" ${S.pledge[i]?'checked':''}> ${t}</label></li>`).join('')}</ul>
+  <div class="cert">
+    <img src="${LOGO}" alt="">
+    <div><h3>شهادة سفير الأمان الرقمي</h3>
+    <p style="margin:.2rem 0"><label>الاسم: <input id="nm" placeholder="اكتب اسمك" maxlength="40"></label></p>
+    <button class="btn" id="pr">طباعة الشهادة</button></div>
+  </div>
+  <div class="help"><b>أين أبلّغ وممن أطلب المساعدة؟</b> تحدث فورًا إلى شخص بالغ تثق به (أحد الوالدين، معلم، مربٍّ أو مسؤول دار الشباب).
+   <ul><li>الرقم الأخضر للتبليغ عن المساس بحقوق الطفل (الهيئة الوطنية لحماية وترقية الطفولة): <b>1111</b>، مجاني ومفتوح على مدار الساعة</li><li>الشرطة: <b>1548</b> · الدرك الوطني: <b>1055</b></li></ul></div>
+  <div class="refs"><b>مراجع الإلهام:</b> محتوى البطاقات والأسئلة مستوحى من الإرشادات والتحذيرات العلنية للجهات الرسمية الجزائرية. راجع صفحاتها الرسمية للاطلاع على آخر التنبيهات.
+   <ul><li>بيان قيادة الدرك الوطني والمديرية العامة للأمن الوطني حول انتحال صفتهما في عمليات النصب الإلكتروني</li><li>الهيئة الوطنية لحماية وترقية الطفولة (onppe.dz)، الخط الأخضر 1111</li><li>دليل حماية الطفل على الإنترنت وموقع «الأسرة والطفل عبر الإنترنت بأمان» (وزارة البريد والمواصلات)</li><li>تصريحات مختصي الدرك الوطني حول الجرائم الإلكترونية</li></ul></div>`;
+ }
+};
+function lvlOf(pct){return pct>=85?'سفير الأمان الرقمي':pct>=60?'حارس واعٍ':pct>=35?'مستكشف حذر':'متدرّب في بداية الطريق'}
+
+/* ---------- rendering ---------- */
+function drawTrack(){
+  $('#track').innerHTML=ST.map((s,i)=>{
+    const cls=i===S.i?'cur':(S.pts[s.k]!==undefined||(i<S.i&&S.visited[i]))?'done':'';
+    return `<button class="node ${cls}" data-act="go" data-i="${i}" aria-label="${s.n}" ${i===S.i?'aria-current="step"':''}><span class="dot">${s.ic}</span><span>${s.n}</span></button>`;
+  }).join('');
+  const c=document.querySelector('.node.cur');
+  if(c&&c.scrollIntoView)c.scrollIntoView({inline:'center',block:'nearest'});
+}
+function render(top){
+  S.visited[S.i]=true;
+  const k=ST[S.i].k;
+  app.innerHTML=VIEW[k]()+`<div class="nav">
+    <button class="btn sec" data-act="prev" ${S.i===0?'disabled':''}>السابق</button>
+    <span class="score">النقاط: <b id="sc">${sum()}</b> / ${TOTAL}</span>
+    <button class="btn" data-act="next" ${S.i===ST.length-1?'disabled':''}>${S.i===0?'ابدأ الرحلة':'التالي'}</button></div>`;
+  drawTrack();
+  if(k==='pass')initPass();
+  if(k==='bal')drawBal();
+  if(k==='end')initEnd();
+  if(top)window.scrollTo({top:0,behavior:'smooth'});
+}
+function go(i){S.i=Math.max(0,Math.min(ST.length-1,i));render(true)}
+
+function initPass(){
+  const pw=$('#pw');
+  const crit=[
+   ['10 أحرف أو أكثر',v=>v.length>=10],
+   ['تحتوي على أرقام',v=>/\d/.test(v)],
+   ['تحتوي على رموز مثل ! _ - @',v=>/[^\p{L}\p{N}\s]/u.test(v)],
+   ['أحرف كبيرة وصغيرة',v=>/[a-z]/.test(v)&&/[A-Z]/.test(v)],
+   ['ليست كلمة شائعة (اسم فريق، 1962، 123456…)',v=>v.length>0&&!COMMON.some(c=>v.toLowerCase().includes(c))]
+  ];
+  function upd(){
+    const v=pw.value;
+    const r=crit.map(c=>c[1](v));
+    const n=v?r.filter(Boolean).length:0;
+    const strong=n>=4&&v.length>=10;
+    $('#cr').innerHTML=crit.map((c,i)=>`<li class="${v&&r[i]?'ok':''}">${c[0]}</li>`).join('');
+    const mi=$('#mi');
+    mi.style.width=(n/5*100)+'%';
+    mi.style.background=n<=1?'var(--red)':n<=3?'var(--orange)':'var(--green)';
+    $('#mt').setAttribute('aria-valuenow',n);
+    $('#ml').textContent=!v?'ابدأ بالكتابة…':strong?'قوية جدًا! هكذا تكون كلمة السر الجيدة.':n>=3?'جيدة، لكن يمكن أن تكون أقوى.':'ضعيفة: يسهل تخمينها.';
+    if(v){award('pass',strong?3:n>=3?2:n>=1?1:0)}
+  }
+  pw.addEventListener('input',upd);
+  $('#pwShow').addEventListener('click',e=>{
+    const t=pw.type==='text';pw.type=t?'password':'text';
+    e.target.textContent=t?'إظهار':'إخفاء';e.target.setAttribute('aria-pressed',t);
+  });
+  upd();
+}
+
+const BAL=[['sleep','النوم','#3d2b9c',0,12],['study','الدراسة/العمل','#1F45C9',0,12],['sport','الرياضة والنشاط','#0C7B3E',0,5],['screen','الشاشات للترفيه','#FF7A1F',0,10]];
+function drawBal(){
+  const fid=document.activeElement&&document.activeElement.id;
+  const b=S.bal,used=b.sleep+b.study+b.sport+b.screen,rest=24-used;
+  const minSleep=K()?9:8,maxScreen=K()?2:4;
+  let h=BAL.map(x=>`<div class="sl"><label for="s_${x[0]}">${x[1]}</label><input type="range" id="s_${x[0]}" data-act="sl" data-k="${x[0]}" min="${x[3]}" max="${x[4]}" step="0.5" value="${b[x[0]]}"><b>${b[x[0]]} س</b></div>`).join('');
+  h+=`<div class="bar" aria-hidden="true">${BAL.map(x=>`<div style="flex:${Math.max(b[x[0]],0.001)};background:${x[2]}">${b[x[0]]>=1.5?x[1].split('/')[0]:''}</div>`).join('')}<div style="flex:${Math.max(rest,0.001)};background:#6B7299">${rest>=2?'الباقي':''}</div></div>`;
+  h+=`<div class="legend">${BAL.map(x=>`<span><i style="background:${x[2]}"></i>${x[1]}</span>`).join('')}<span><i style="background:#6B7299"></i>الباقي: ${Math.max(rest,0)} س (أكل، أهل، أصدقاء، راحة)</span></div>`;
+  const chk=[
+   [b.sleep>=minSleep,`النوم كاف (لا يقل عن ${minSleep} ساعات)`,`النوم قليل، الأفضل ${minSleep} ساعات على الأقل`],
+   [b.sport>=1,'حركة يومية جيدة','حاول أن تمنح جسمك ساعة نشاط على الأقل'],
+   [b.screen<=maxScreen,`الشاشات في حدود معقولة (حتى ${maxScreen} ساعات ترفيه)`,`وقت الشاشات كبير، حاول ألا يتجاوز ${maxScreen} ساعات`],
+   [rest>=4&&used<=24,'وقت كاف للأهل والأصدقاء والأكل','لا يبقى وقت كاف للأهل والأصدقاء والراحة (الأقل 4 ساعات)']
+  ];
+  award('bal',chk.filter(c=>c[0]).length);
+  h+=`<ul class="crit">${chk.map(c=>`<li class="${c[0]?'ok':''}">${c[0]?c[1]:c[2]}</li>`).join('')}</ul>`;
+  h+=rule('هذه توصيات عامة للنقاش وليست وصفة طبية. الفكرة: الشاشة جزء من يومك وليست كل يومك.','ملاحظة:');
+  $('#bl').innerHTML=h;
+  updScore();
+  if(fid){const e=document.getElementById(fid);if(e)e.focus()}
+}
+
+function initEnd(){
+  const pr=$('#pr'),nm=$('#nm');
+  pr.addEventListener('click',()=>{
+    const p=sum(),pct=Math.round(p/TOTAL*100);
+    $('#printcert').innerHTML=`<img src="${LOGO}" alt=""><h1>شهادة سفير الأمان الرقمي</h1>
+      <p>يشهد ديوان قطاع الشباب والرياضة بأن</p><div class="nm">${esc(nm.value.trim()||'...........................')}</div>
+      <p>شارك في الحصة التحسيسية «إنترنت آمن، جيل واعٍ» وحقق المستوى:</p><p class="g" style="font-size:1.8rem">${lvlOf(pct)}</p>
+      <p>النتيجة: ${p} / ${TOTAL}</p><p style="margin-top:1.5rem">لنبني صروح الفكر، لا نكن معاول هدم</p>`;
+    window.print();
+  });
+}
+
+/* ---------- events ---------- */
+document.addEventListener('click',e=>{
+  const t=e.target.closest('[data-act]');if(!t)return;
+  const a=t.dataset.act,key=t.dataset.key;
+  if(a==='next')go(S.i+1);
+  else if(a==='prev')go(S.i-1);
+  else if(a==='go')go(+t.dataset.i);
+  else if(a==='aud'){const v=t.dataset.v;const pl=S.pledge;fresh();S.aud=v;S.pledge=pl;render()}
+  else if(a==='pick'){
+    const i=+t.dataset.i;S.ans[key]=i;
+    award(key,SC[key][S.aud].opts[i].s);
+    render();
+  }
+  else if(a==='retry'){delete S.ans[key];delete S.pts[key];render()}
+  else if(a==='sans'){
+    const q=S.q[key]||0,items=SEQ[key].items();
+    const b=+t.dataset.b;S.ans[key+q]=b;
+    if(b===items[q].c)S.cor[key]=(S.cor[key]||0)+1;
+    award(key,S.cor[key]||0);render();
+  }
+  else if(a==='snext'){S.q[key]=(S.q[key]||0)+1;render()}
+  else if(a==='redo'){
+    Object.keys(S.ans).forEach(k=>{if(k.startsWith(key)&&k!==key)delete S.ans[k]});
+    S.q[key]=0;S.cor[key]=0;award(key,0);render();
+  }
+});
+document.addEventListener('toggle',e=>{
+  const d=e.target;
+  if(d&&d.dataset&&d.dataset.card)S.cardOpen[d.dataset.card]=d.open;
+},true);
+document.addEventListener('input',e=>{
+  const t=e.target;
+  if(t.dataset&&t.dataset.act==='sl'){S.bal[t.dataset.k]=+t.value;drawBal()}
+});
+document.addEventListener('change',e=>{
+  const t=e.target;
+  if(t.dataset&&t.dataset.act==='pl'){S.pledge[t.dataset.i]=t.checked}
+});
+document.addEventListener('keydown',e=>{
+  const tag=(e.target.tagName||'').toLowerCase();
+  if(tag==='input'||tag==='textarea')return;
+  if(e.key==='ArrowLeft')go(S.i+1);
+  if(e.key==='ArrowRight')go(S.i-1);
+});
+$('#bStage').addEventListener('click',e=>{
+  const on=document.documentElement.classList.toggle('stage');
+  e.target.setAttribute('aria-pressed',on);
+  e.target.textContent=on?'إنهاء وضع العرض':'وضع العرض';
+  try{if(on&&document.documentElement.requestFullscreen)document.documentElement.requestFullscreen();else if(!on&&document.fullscreenElement)document.exitFullscreen()}catch(_){}
+});
+$('#bReset').addEventListener('click',()=>{fresh();render(true)});
+
+render(false);
+})();
+</script>
+</body>
+</html>

@@ -423,7 +423,6 @@ span.opt{cursor:default}
 .vi-btn[hidden]{display:none}
 #vskip{inset-inline-end:1rem}
 #vsnd{inset-inline-start:1rem}
-#vplay{bottom:auto;top:50%;left:50%;transform:translate(-50%,-50%);padding:.9rem 2rem;font-size:1.3rem;line-height:1.3;white-space:nowrap}
 @media print{.vintro{display:none!important}}
 </style>
 </head>
@@ -470,7 +469,6 @@ span.opt{cursor:default}
 <div class="vintro" id="vintro" role="dialog" aria-modal="true" aria-label="فيديو افتتاحي" hidden>
  <video id="vvid" playsinline webkit-playsinline preload="auto"></video>
  <button class="vi-btn" id="vsnd" data-act="vsound" hidden>🔊 تشغيل الصوت</button>
- <button class="vi-btn" id="vplay" data-act="vplay" hidden>▶ اضغط لبدء الفيديو</button>
  <button class="vi-btn" id="vskip" data-act="vskip">تخطّي المقدمة ◂</button>
 </div>
 <div class="splash" id="splash" role="dialog" aria-modal="true" aria-labelledby="spT" hidden>
@@ -1926,7 +1924,11 @@ function startIntro(){
   viTimer=setTimeout(endIntro,10000);
   vv.src=VIDEO_SRC;vv.muted=false;
   const p=vv.play();
-  if(p&&p.catch)p.catch(()=>{clearTimeout(viTimer);viBtn('#vplay',true)});
+  if(p&&p.catch)p.catch(()=>{
+    vv.muted=true;
+    const q=vv.play();
+    if(q&&q.then)q.then(()=>viBtn('#vsnd',true)).catch(endIntro);
+  });
 }
 if(!spSkipped())startIntro();
 
@@ -1940,7 +1942,7 @@ document.addEventListener('click',e=>{
   if(a==='spopen'){openSplash();return}
   if(a==='vskip'){endIntro();return}
   if(a==='vsound'){vv.muted=false;viBtn('#vsnd',false);return}
-  if(a==='vplay'){vv.muted=false;viBtn('#vplay',false);const r=vv.play();if(r&&r.catch)r.catch(endIntro);return}
+
   if(addClick(a,t,e))return;
   if(a==='next')go(S.i+1);
   else if(a==='prev')go(S.i-1);

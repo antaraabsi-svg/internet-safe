@@ -424,6 +424,13 @@ span.opt{cursor:default}
 #vskip{inset-inline-end:1rem}
 #vsnd{inset-inline-start:1rem}
 @media print{.vintro{display:none!important}}
+
+.ctguide{background:var(--soft);border:2px solid var(--line);border-inline-start:6px solid var(--gold);border-radius:14px;padding:.6rem 1rem;margin:.6rem 0 1rem;max-width:720px}
+.ctguide summary{font-weight:800;cursor:pointer;color:var(--royal)}
+.ctguide ol{margin:.5rem 0 .3rem;padding-inline-start:1.3rem}
+.ctguide li{margin:.2rem 0}
+:root[data-theme="dark"] .ctguide summary{color:#AFC0FF}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .ctguide summary{color:#AFC0FF}}
 </style>
 </head>
 <body>
@@ -1689,7 +1696,15 @@ const stName=k=>{const s=ST.find(x=>x.k===k);return s?s.ic+' '+s.n:k};
 function ctView(){
   if(CT.phase==='play')return ctPlay();
   if(CT.phase==='end')return ctEnd();
-  return `<h2>وضع المسابقة</h2><p class="lead">مسابقة بين فريقين إلى أربعة فرق على جهاز واحد. يقرأ المنشّط السؤال، وتتناقش الفرق، ثم تُكشف الإجابة ويُمنح النقطة للفريق المصيب. لا يحتاج إلى اتصال بالخادم.</p>
+  return `<h2>وضع المسابقة</h2><p class="lead">مسابقة بين فريقين إلى أربعة فرق على جهاز واحد. يقرأ المنشّط السؤال، وتتناقش الفرق، ثم تُكشف الإجابة ويختار المنشّط الفرق التي أصابت فتنال كل منها نقطة. لا يحتاج إلى اتصال بالخادم.</p>
+  <details class="ctguide" open><summary>كيف تُلعب المسابقة؟</summary><ol>
+   <li>اكتب أسماء الفرق (من 2 إلى 4)، واختر عدد الأسئلة والزمن والمحاور، ثم اضغط «ابدأ المسابقة».</li>
+   <li>يقرأ المنشّط السؤال بصوت عالٍ ويضغط «ابدأ المؤقت». يتناقش كل فريق ويتفق على إجابة واحدة.</li>
+   <li>عند انتهاء الوقت يعلن كل فريق إجابته (يُستحسن في الوقت نفسه برفع بطاقة أو بإشارة من ممثله) حتى لا يقلّد أحدٌ أحدًا.</li>
+   <li>يضغط المنشّط «أظهر الإجابة»، فتظهر الإجابة الصحيحة مع تفسيرها.</li>
+   <li>البرنامج لا يصحّح الإجابات بنفسه: يضغط المنشّط على اسم كل فريق أصاب. يمكن اختيار فريق أو أكثر، أو «الجميع»، أو «لا أحد»، وتُضاف نقطة لكل فريق مختار تلقائيًا. ولتصحيح اختيار خاطئ يُضغط عليه مرة ثانية.</li>
+   <li>يضغط «السؤال التالي»، وفي النهاية تظهر النتيجة وترتيب الفرق.</li></ol>
+   <p class="warn">زرّا «+» و«−» بجانب نقاط كل فريق للتعديل اليدوي عند الحاجة، كنقطة إضافية للفريق الأسرع.</p></details>
   <div class="ctbox"><h3>الفرق</h3>
   ${CT.teams.map((t,i)=>`<div class="ctrow"><input data-act="ctn" data-i="${i}" value="${esc(t.n)}" maxlength="24" aria-label="اسم الفريق ${i+1}">${CT.teams.length>2?`<button class="pill" data-act="ctdel" data-i="${i}">حذف</button>`:''}</div>`).join('')}
   ${CT.teams.length<4?`<button class="pill" data-act="ctadd">+ إضافة فريق</button>`:''}
@@ -1712,7 +1727,8 @@ function ctPlay(){
   if(!CT.shown)h+=`<p><button class="btn" data-act="ctshow">أظهر الإجابة</button></p>`;
   else{
     h+=`<div class="fb s2"><span class="fav">${guide('happy',46)}</span><div><b>الإجابة الصحيحة: ${q.btns[it.c].t}</b><p>${it.f}</p></div></div>`;
-    h+=CT.given?'':`<p class="ctx">من أجاب صحيحًا؟</p><div class="row">${CT.teams.map((t,i)=>`<button class="btn" data-act="ctaward" data-i="${i}">✔ ${esc(t.n)}</button>`).join('')}<button class="btn sec" data-act="ctnone">لا أحد</button></div>`;
+    const got=CT.got||[],allOn=CT.teams.length>1&&got.length===CT.teams.length;
+    h+=`<p class="ctx">من أجاب صحيحًا؟ <span class="warn">(يمكن اختيار أكثر من فريق)</span></p><div class="row">${CT.teams.map((t,i)=>{const on=got.includes(i);return `<button class="btn ${on?'':'sec'}" data-act="ctaward" data-i="${i}" aria-pressed="${on}">${on?'✔ ':''}${esc(t.n)}</button>`}).join('')}${CT.teams.length>1?`<button class="btn ${allOn?'':'sec'}" data-act="ctall" aria-pressed="${allOn}">${allOn?'✔ ':''}الجميع</button>`:''}<button class="btn ${CT.none?'':'sec'}" data-act="ctnone" aria-pressed="${!!CT.none}">لا أحد</button></div>`;
     h+=`<p><button class="btn" data-act="ctnext" ${CT.given?'':'disabled'}>${CT.i+1<n?'السؤال التالي':'النتيجة النهائية'}</button></p>`;
   }
   return h+`<p><button class="pill" data-act="ctquit">إنهاء المسابقة</button></p>`;
@@ -1729,7 +1745,7 @@ function ctBegin(){
   let pool=[];
   CT.keys.forEach(k=>{const items=SEQ[k].items(),btns=SEQ[k].btns;items.forEach(it=>pool.push({k,it,btns}))});
   pool=shuffled(pool.length).map(i=>pool[i]).slice(0,Math.min(CT.rounds,pool.length));
-  CT.pool=pool;CT.i=0;CT.shown=false;CT.given=false;CT.left=CT.secs;CT.teams.forEach(t=>t.s=0);CT.phase='play';ctStop();
+  CT.pool=pool;CT.i=0;CT.shown=false;CT.given=false;CT.got=[];CT.none=false;CT.left=CT.secs;CT.teams.forEach(t=>t.s=0);CT.phase='play';ctStop();
 }
 
 /* ---------- printables ---------- */
@@ -1820,7 +1836,7 @@ function download(name,text,type){
 }
 function facExtra(){
   return `<h3>المسابقة والمطبوعات والتقرير</h3><ul>
-   <li><b>المسابقة:</b> من تبويب «المسابقة». اكتب أسماء الفرق (2 إلى 4)، واختر عدد الأسئلة والزمن والمحاور، ثم اقرأ السؤال، وشغّل المؤقت، واكشف الإجابة، وامنح النقطة للفريق المصيب.</li>
+   <li><b>المسابقة:</b> من تبويب «المسابقة». اكتب أسماء الفرق (2 إلى 4)، واختر عدد الأسئلة والزمن والمحاور، ثم اقرأ السؤال، وشغّل المؤقت، واكشف الإجابة، ثم اضغط على اسم كل فريق أصاب (يمكن اختيار أكثر من فريق أو «الجميع» أو «لا أحد») فتُضاف النقاط تلقائيًا.</li>
    <li><b>حقيبة المطبوعات:</b> بطاقات تصويت، وبطاقات لعب أدوار، وملصق QR. اطبعها قبل الحصة.</li>
    <li><b>سجل الجلسة والتقرير:</b> اطلب من كل مشارك الضغط على «حفظ نتيجتي في سجل الجلسة» في نهاية البرنامج. يجمع تبويب «تقرير الحصة» المتوسطات ورضا المشاركين في تقرير جاهز للطباعة. السجل محفوظ في متصفح هذا الجهاز فقط، فاستعمل جهازًا واحدًا لكل حصة.</li>
    <li><b>زر «أحتاج مساعدة»:</b> يظهر في كل الصفحات ويعرض خطوات الحماية وأرقام الاستغاثة.</li></ul>`;
@@ -1843,12 +1859,23 @@ function addClick(a,t,e){
      }
      render();return true;
    case 'ctshow':ctStop();CT.shown=true;render();return true;
-   case 'ctaward':CT.teams[+t.dataset.i].s++;CT.given=true;sfx('ok');render();return true;
-   case 'ctnone':CT.given=true;render();return true;
+    case 'ctaward':{
+      CT.got=CT.got||[];const i=+t.dataset.i,tm=CT.teams[i],k=CT.got.indexOf(i);
+      if(k<0){CT.got.push(i);tm.s++;sfx('ok')}else{CT.got.splice(k,1);tm.s=Math.max(0,tm.s-1)}
+      CT.none=false;CT.given=CT.got.length>0;render();return true}
+    case 'ctall':{
+      CT.got=CT.got||[];
+      if(CT.got.length===CT.teams.length){CT.got.forEach(i=>{CT.teams[i].s=Math.max(0,CT.teams[i].s-1)});CT.got=[];CT.given=false}
+      else{CT.teams.forEach((tm,i)=>{if(!CT.got.includes(i)){CT.got.push(i);tm.s++}});CT.given=true;sfx('ok')}
+      CT.none=false;render();return true}
+    case 'ctnone':{
+      if(CT.none){CT.none=false;CT.given=false}
+      else{(CT.got||[]).forEach(i=>{CT.teams[i].s=Math.max(0,CT.teams[i].s-1)});CT.got=[];CT.none=true;CT.given=true}
+      render();return true}
    case 'ctpt':{const tm=CT.teams[+t.dataset.i];tm.s=Math.max(0,tm.s+(+t.dataset.d));render();return true}
    case 'ctnext':
      ctStop();CT.i++;
-     if(CT.i>=CT.pool.length){CT.phase='end';sfx('win')}else{CT.shown=false;CT.given=false;CT.left=CT.secs}
+     if(CT.i>=CT.pool.length){CT.phase='end';sfx('win')}else{CT.shown=false;CT.given=false;CT.got=[];CT.none=false;CT.left=CT.secs}
      render(true);return true;
    case 'ctquit':ctStop();CT.phase='end';render(true);return true;
    case 'ctagain':ctBegin();render(true);return true;

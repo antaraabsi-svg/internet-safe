@@ -7,8 +7,9 @@
 - `manifest.webmanifest` و`sw.js` و`icon-*.png` — تثبيت البرنامج على الهاتف أو الحاسوب وعمله دون إنترنت بعد أول فتح.
 - `og.jpg` — صورة معاينة الرابط عند مشاركته في فيسبوك وغيره.
 
-## بعد النشر (مرة واحدة)
-في أعلى `index.html` سطران يحملان `USERNAME` و`REPO`: `og:url` و`og:image`. استبدلهما بعنوان صفحتك الفعلي، مثل `https://اسم-الحساب.github.io/اسم-المستودع/`، ثم اختبر المعاينة في https://developers.facebook.com/tools/debug/
+## معاينة الرابط
+ضُبط `og:url` و`og:image` في أعلى `index.html` على عنوان الموقع: https://antaraabsi-svg.github.io/internet-safe/
+اختبر المعاينة في https://developers.facebook.com/tools/debug/ واضغط «Scrape Again» بعد أي تحديث للصورة.
 
 ## قائمة فحص قبل أول حصة
 1. افتح الرابط على الهاتف الذي سيُستعمل، وتأكد من الفيديو والصوت.

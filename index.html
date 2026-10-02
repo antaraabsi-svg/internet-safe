@@ -252,24 +252,27 @@ h3{font-family:var(--f-display);font-weight:400;font-size:1.35rem;color:var(--ro
 :root.hc .card,:root.hc .opt,:root.hc .info,:root.hc .item{border-width:3px}
 :root.hc .btn{background:#000;color:#fff}
 :root.hc .tab[aria-pressed="true"],:root.hc .pill[aria-pressed="true"]{background:#000;border-color:#000}
-#printcert{display:none;page:cert}
-@page cert{size:A4 landscape;margin:8mm}
+#printcert{display:none}
 @media print{
+  html{font-size:16px!important}
+  html,body{height:auto!important;min-height:0!important}
+  body{padding:0!important;margin:0!important;background:#fff!important}
   body.pc>*:not(#printcert){display:none!important}
-  body.pc #printcert{display:block!important}
-  .pc-in{border:8px double #0C7B3E;outline:3px solid #E4B03A;outline-offset:-16px;padding:1.2rem 2rem;text-align:center;color:#0E1B5C;background:#fff;min-height:180mm;display:flex;flex-direction:column;align-items:center;justify-content:center}
-  .pc-in .ch{text-align:center;margin-bottom:.4rem}
-  .pc-in .ch img{display:block;margin:0 auto .3rem;width:auto;max-height:110px;max-width:240px;border:0;border-radius:0}
-  .pc-in .ch .l1{font-weight:800;font-size:1.3rem}
-  .pc-in .ch .l2{font-size:1.1rem}
-  .pc-in .pt{font-family:var(--f-display);font-size:2.8rem;margin:.6rem 0}
-  .pc-in p{font-size:1.15rem;margin:.3rem 0}
-  .pc-in .nm{font-size:2rem;font-weight:800;border-bottom:3px solid #E4B03A;padding:0 2rem;margin:.5rem 0}
-  .pc-in .lv{font-family:var(--f-display);font-size:2rem;color:#0C7B3E;margin:.3rem 0}
-  .pc-in .sigs{display:flex;gap:3rem;align-items:flex-end;justify-content:center;margin-top:1.4rem;width:100%}
-  .pc-in .sigs>div{min-width:150px}
-  .pc-in .stamp{width:110px;height:110px;border:2px dashed #999;border-radius:50%;display:grid;place-items:center;color:#777;font-size:.8rem;min-width:0}
-  .pc-in .mt{margin-top:1rem;color:#0C7B3E;font-weight:700}
+  body.pc #printcert{display:block!important;break-inside:avoid;page-break-inside:avoid;break-after:avoid;page-break-after:avoid}
+  .pc-in{box-sizing:border-box;width:100%;height:188mm;overflow:hidden;border:8px double #0C7B3E;outline:3px solid #E4B03A;outline-offset:-16px;padding:7mm 14mm;text-align:center;color:#0E1B5C;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .pc-in .ch{text-align:center;margin:0 0 2mm}
+  .pc-in .ch img{display:block;margin:0 auto 1.5mm;width:auto;height:auto;max-height:24mm;max-width:60mm;border:0;border-radius:0}
+  .pc-in .ch .l1{font-weight:800;font-size:14pt;line-height:1.35}
+  .pc-in .ch .l2{font-size:12pt;line-height:1.35}
+  .pc-in .pt{font-family:var(--f-display);font-size:30pt;line-height:1.3;margin:3mm 0}
+  .pc-in p{font-size:13pt;line-height:1.5;margin:1.5mm 0;max-width:210mm}
+  .pc-in .nm{font-size:22pt;font-weight:800;line-height:1.4;border-bottom:3px solid #E4B03A;padding:0 10mm;margin:2.5mm 0}
+  .pc-in .lv{font-family:var(--f-display);font-size:22pt;line-height:1.3;color:#0C7B3E;margin:1.5mm 0}
+  .pc-in .sigs{display:flex;gap:16mm;align-items:flex-end;justify-content:center;margin-top:7mm;width:100%}
+  .pc-in .sigs>div{min-width:48mm;font-size:12pt}
+  .pc-in .sigs hr{margin:0 0 1.5mm;border:0;border-top:1.5px solid #0E1B5C}
+  .pc-in .stamp{width:26mm;height:26mm;min-width:0;border:2px dashed #999;border-radius:50%;display:grid;place-items:center;color:#777;font-size:9pt}
+  .pc-in .mt{margin-top:4mm;color:#0C7B3E;font-weight:700}
   body.pd .stripe,body.pd .top,body.pd .bar2,body.pd .track-wrap,body.pd footer,body.pd .noprint,body.pd .skip{display:none!important}
   body.pd .card{border:0;padding:0}
   body.pd .card::after{display:none}
@@ -381,14 +384,14 @@ span.opt{cursor:default}
 .kit h3{margin-top:.2rem}
 .qprev{width:150px;height:150px;border:2px solid var(--line);border-radius:10px;background:#fff;padding:4px;margin:.4rem 0}
 .qprev svg{width:100%;height:100%;display:block}
-#printkit{display:none;page:kit}
-@page kit{size:A4 portrait;margin:10mm}
+#printkit{display:none}
 .kpage{page-break-after:always;break-after:page;color:#0E1B5C;background:#fff}
 .kpage:last-child{page-break-after:auto;break-after:auto}
 @media print{
   body.pk>*:not(#printkit){display:none!important}
   body.pk #printkit{display:block!important}
   body.pk{background:#fff}
+  .kpage.rpp{break-after:auto;page-break-after:auto;height:268mm;overflow:hidden}
   .kt{font-family:var(--f-display);font-weight:400;font-size:1.8rem;text-align:center;margin:0 0 .6rem;color:#0E1B5C}
   .kn{text-align:center;margin:0 0 .6rem}
   .vcol{display:grid;grid-template-rows:repeat(3,1fr);gap:8mm;height:250mm}
@@ -398,11 +401,13 @@ span.opt{cursor:default}
   .vc .vt{font-family:var(--f-display);font-size:3.2rem;line-height:1.3}
   .vgrid .vc .vt{font-size:2.2rem}
   .vc .vs{font-size:1.3rem}
-  .rpg{display:grid;grid-template-columns:1fr 1fr;gap:5mm}
-  .rpc{border:2px dashed #0E1B5C;border-radius:12px;padding:.4rem .8rem;break-inside:avoid;position:relative;font-size:.95rem;line-height:1.55}
-  .rpc h2{font-family:var(--f-display);font-weight:400;font-size:1.3rem;margin:.1rem 0;color:#1F45C9}
-  .rpc p{margin:.2rem 0}.rpc ul{margin:.2rem 0;padding-inline-start:1.1rem}
-  .rpn{position:absolute;inset-inline-end:.5rem;top:.3rem;width:1.7rem;height:1.7rem;border-radius:50%;background:#E4B03A;display:grid;place-items:center;font-weight:800;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .rpp .kt{font-size:20pt;margin:0 0 1.5mm}
+  .rpp .kn{font-size:10pt;margin:0 0 3mm}
+  .rpg{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(4,1fr);gap:4mm;height:243mm}
+  .rpc{box-sizing:border-box;border:2px dashed #0E1B5C;border-radius:3mm;padding:3mm 4mm;break-inside:avoid;position:relative;font-size:11.5pt;line-height:1.45;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-start;min-height:0}
+  .rpc h2{font-family:var(--f-display);font-weight:400;font-size:16pt;line-height:1.3;margin:0 0 1mm;padding-inline-end:9mm;color:#1F45C9}
+  .rpc p{margin:0 0 1mm}.rpc ul{margin:0;padding-inline-start:5mm}.rpc li{margin:0}
+  .rpn{position:absolute;inset-inline-end:3mm;top:3mm;width:7mm;height:7mm;border-radius:50%;background:#E4B03A;display:grid;place-items:center;font-weight:800;font-size:11pt;-webkit-print-color-adjust:exact;print-color-adjust:exact}
   .poster{text-align:center;display:flex;flex-direction:column;align-items:center;min-height:270mm}
   .pbn{width:100%;height:auto;border-radius:14px;border:3px solid #E4B03A}
   .pth{font-family:var(--f-cal);font-size:3.2rem;margin:.8rem 0 .2rem;color:#1F45C9}
@@ -1712,7 +1717,11 @@ function initEnd(){
 }
 function printWith(cls){
   document.body.classList.add(cls);
-  const off=()=>{document.body.classList.remove(cls);window.removeEventListener('afterprint',off)};
+  /* حجم الصفحة يُحقن وقت الطباعة فقط، فيعمل في كل المتصفحات (الشهادة أفقية، والبقية عمودية) */
+  const pg=document.createElement('style');
+  pg.textContent=cls==='pc'?'@page{size:A4 landscape;margin:8mm}':'@page{size:A4 portrait;margin:'+(cls==='pk'?'10mm':'12mm')+'}';
+  document.head.appendChild(pg);
+  const off=()=>{document.body.classList.remove(cls);if(pg.parentNode)pg.parentNode.removeChild(pg);window.removeEventListener('afterprint',off)};
   window.addEventListener('afterprint',off);
   window.print();
   setTimeout(off,1500);
@@ -1865,7 +1874,7 @@ function voteHTML(){
 }
 function rpHTML(){
   const list=RP[S.aud];
-  return `<div class="kpage"><h1 class="kt">بطاقات لعب الأدوار — ${K()?'الأطفال':'الشباب'}</h1><p class="kn">قصّ البطاقات، ووزّعوا الأدوار بين أفراد المجموعة، وتدرّبوا على الموقف ثم ناقشوا الأسئلة.</p><div class="rpg">${list.map((c,i)=>`<div class="rpc"><div class="rpn">${i+1}</div><h2>${c.t}</h2><p>${c.s}</p><p><b>الأدوار:</b> ${c.r.join(' · ')}</p><ul>${c.q.map(x=>`<li>${x}</li>`).join('')}</ul></div>`).join('')}</div></div>`;
+  return `<div class="kpage rpp"><h1 class="kt">بطاقات لعب الأدوار — ${K()?'الأطفال':'الشباب'}</h1><p class="kn">قصّ البطاقات، ووزّعوا الأدوار بين أفراد المجموعة، وتدرّبوا على الموقف ثم ناقشوا الأسئلة.</p><div class="rpg">${list.map((c,i)=>`<div class="rpc"><div class="rpn">${i+1}</div><h2>${c.t}</h2><p>${c.s}</p><p><b>الأدوار:</b> ${c.r.join(' · ')}</p><ul>${c.q.map(x=>`<li>${x}</li>`).join('')}</ul></div>`).join('')}</div></div>`;
 }
 function posterHTML(){
   const u=progUrl();

@@ -499,6 +499,39 @@ body.pd .fnav{display:none!important}
 @keyframes ctrophy{from{transform:translateY(0) scale(1)}to{transform:translateY(-8px) scale(1.08)}}
 .winner{color:var(--orange);font-size:1.5em}
 @media (prefers-reduced-motion:reduce){.confetti{display:none}.trophy,.cttimer.low{animation:none}}
+
+.node.skip{opacity:.45}
+.pathbar{background:#FFF4D6;border:2px solid var(--gold);border-radius:12px;padding:.4rem .8rem;margin:0 0 .8rem;font-size:.95rem}
+:root[data-theme="dark"] .pathbar{background:#2b2a14}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .pathbar{background:#2b2a14}}
+.refsec{scroll-margin-top:90px;margin-top:1.6rem;padding-top:.6rem;border-top:3px solid var(--gold)}
+.refnav{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center}
+.refnav a.pill{text-decoration:none}
+.refsteps{padding-inline-start:1.4rem}.refsteps li{margin:.35rem 0}
+.rsum{background:var(--soft);border:2px solid var(--line);border-radius:12px;padding:.6rem 1rem}
+.sbar{display:grid;grid-template-columns:9rem 1fr auto;gap:.6rem;align-items:center;margin:.3rem 0}
+.sbar .sb{height:16px;border-radius:999px;background:#dfe5ff;overflow:hidden}
+.sbar .sb i{display:block;height:100%;border-radius:999px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.sbar i.pre{background:var(--gold)}.sbar i.post{background:#1E9E4B}
+@media (max-width:520px){.sbar{grid-template-columns:6rem 1fr auto}}
+.node.skip:hover{opacity:.8}
+@media print{
+  .kpage.pact{height:268mm;overflow:hidden;break-after:auto;page-break-after:auto;font-size:13.5pt;line-height:1.7}
+  .pact .kt{font-size:30pt;margin:0 0 2mm;text-align:center}
+  .pact h2{font-family:var(--f-display);font-weight:400;font-size:19pt;color:#1F45C9;margin:7mm 0 2mm}
+  .pact .pn{font-size:11.5pt;text-align:center;margin:0 0 5mm}
+  .pact .pnames{display:flex;justify-content:space-between;gap:6mm;margin:0 0 3mm;font-size:13pt}
+  .pact .pl{display:inline-block;min-width:26mm;border-bottom:1.5px solid #0E1B5C;height:1em;vertical-align:baseline;margin:0 1mm}
+  .pact .pnames .pl{min-width:34mm}
+  .pact ul.pck{list-style:none;padding:0;margin:0}
+  .pact ul.pck li{position:relative;padding-inline-start:9mm;margin:3mm 0}
+  .pact ul.pck li::before{content:"";position:absolute;inset-inline-start:0;top:.35em;width:5mm;height:5mm;border:1.8px solid #0E1B5C;border-radius:1.2mm}
+  .pact .pnum{margin:8mm 0 4mm;padding:3.5mm 4mm;border:2px dashed #0E1B5C;border-radius:3mm;text-align:center;font-size:13pt}
+  .pact .sigs2{margin-top:14mm}
+  .rsum{break-inside:avoid}
+}
+.btn{text-decoration:none}
+.gframe{display:block;width:100%;height:min(82vh,860px);border:2px solid var(--line);border-radius:14px;background:var(--bg);margin-top:.6rem}
 </style>
 </head>
 <body>
@@ -520,6 +553,8 @@ body.pd .fnav{display:none!important}
   <button class="tab" id="tCt" data-act="mode" data-v="contest" aria-pressed="false">المسابقة</button>
   <button class="tab" id="tPar" data-act="mode" data-v="parents" aria-pressed="false">دليل الأولياء</button>
   <button class="tab" id="tFac" data-act="mode" data-v="fac" aria-pressed="false">ورقة المنشّط</button>
+  <button class="tab" id="tRef" data-act="mode" data-v="ref" aria-pressed="false">الإبلاغ والقانون</button>
+  <button class="tab" id="tGame" data-act="mode" data-v="game" aria-pressed="false">مغامرة يقظان</button>
   <button class="tab" id="tKit" data-act="mode" data-v="kit" aria-pressed="false">المطبوعات</button>
   <button class="tab" id="tRep" data-act="mode" data-v="report" aria-pressed="false">تقرير الحصة</button>
  </div>
@@ -1286,8 +1321,8 @@ const MAXP={pass:3,chat:2,share:9,black:2,news:5,bully:2,fraud:5,pay:5,games:5,a
 const TOTAL=Object.values(MAXP).reduce((a,b)=>a+b,0);
 const NSTATIONS=Object.keys(MAXP).length;
 
-const KEEP=['dz','snd','shuf','fnotes','hc','org','nm','stage','fs','dir','dwn','kitUrl','kitNote','rep'];
-function base(){return {aud:'kids',i:0,mode:'prog',pts:{},ans:{},q:{},cor:{},ord:{},visited:{0:true},pledge:{},cardOpen:{},bal:{sleep:8,study:6,sport:1,screen:3},pre:{},post:{},dz:false,snd:false,shuf:true,fnotes:false,hc:false,org:'',nm:'',stage:false,fs:0,dir:'',dwn:'',sv:{},logId:0,kitUrl:'',kitNote:'',rep:{date:'',place:'',inst:'',fac:'',n:'',notes:''}}}
+const KEEP=['dz','snd','shuf','fnotes','hc','org','nm','stage','fs','path','pathN','dir','dwn','kitUrl','kitNote','rep'];
+function base(){return {aud:'kids',i:0,mode:'prog',pts:{},ans:{},q:{},cor:{},ord:{},visited:{0:true},pledge:{},cardOpen:{},bal:{sleep:8,study:6,sport:1,screen:3},pre:{},post:{},dz:false,snd:false,shuf:true,fnotes:false,hc:false,org:'',nm:'',stage:false,fs:0,path:null,pathN:'',dir:'',dwn:'',sv:{},logId:0,kitUrl:'',kitNote:'',rep:{date:'',place:'',inst:'',fac:'',n:'',notes:''}}}
 const FSK='diwan-safe-fs';
 function loadFs(){try{const v=parseInt(localStorage.getItem(FSK)||'0',10);return Math.max(-1,Math.min(4,isNaN(v)?0:v))}catch(_){return 0}}
 let S=base(),SAVED=null,curKey='intro',CLOGO='';
@@ -1494,7 +1529,7 @@ const VIEW={
  bal(){return H('المحطة الثالثة عشرة','توازن يومي','وزّع ساعات يومك النموذجي. الوقت الباقي للأكل والأهل والأصدقاء والراحة.')+card('bal')+`<div id="bl"></div>`},
  post(){return H('قبل الختام','الاختبار البعدي','أجب عن الأسئلة نفسها الآن، ولنرَ ما تغيّر بعد الرحلة.')+quiz('post')},
  end(){
-  const p=sum(),pct=Math.round(p/TOTAL*100);
+  const p=sum(),pct=Math.round(p/ptot()*100);
   const left=ST.filter(s=>MAXP[s.k]&&S.pts[s.k]===undefined);
   const lvl=lvlOf(pct);
   const hasPre=Object.keys(S.pre).length>=PRETEST[S.aud].length,hasPost=Object.keys(S.post).length>=PRETEST[S.aud].length;
@@ -1504,7 +1539,7 @@ const VIEW={
     cmp=`<div class="cmp"><div><span>قبل</span><b>${a===null?'—':a+' / '+n}</b></div><div class="arr" aria-hidden="true">←</div><div><span>بعد</span><b>${b===null?'—':b+' / '+n}</b></div>${(a!==null&&b!==null)?`<p>${b>a?'تحسّنت نتيجتك بـ '+(b-a)+' نقطة. أحسنت!':b===a?'ثبتت نتيجتك. راجع البطاقات التي أخطأت فيها.':'انخفضت نتيجتك قليلًا، وهذا يحدث أحيانًا؛ أعد قراءة البطاقات.'}</p>`:''}</div>`;
   }
   return `<h2>الميثاق والنتيجة</h2>${gsay('end')}${fnote('end')}
-  <p class="lead">نتيجة المحطات: <b style="color:var(--orange);font-size:1.4rem">${p} / ${TOTAL}</b> — المستوى: <b>${lvl}</b></p>
+  <p class="lead">نتيجة المحطات: <b style="color:var(--orange);font-size:1.4rem">${p} / ${ptot()}</b> — المستوى: <b>${lvl}</b></p>
   ${cmp}
   ${left.length?`<p>لم تكمل بعد: ${left.map(s=>`<button class="chip" data-act="go" data-i="${ST.indexOf(s)}">${s.ic} ${s.n}</button>`).join(' ')}</p>`:''}
   <p class="ctx">ميثاقي الرقمي — ضع علامة على ما تلتزم به:</p>
@@ -1547,14 +1582,102 @@ function facView(){
   return `<h2>ورقة المنشّط</h2><p class="lead">دليل مختصر لإدارة الحصة: التحضير، صيغ الحصة، وتوجيهات كل محطة. الزمن الكلي المقترح للنسخة الكاملة نحو ${tot} دقيقة.</p>
   <p class="noprint"><button class="btn" data-act="printdoc">طباعة الورقة</button></p>
   <h3>قبل الحصة</h3><ul>${FAC_PREP.map(x=>`<li>${x}</li>`).join('')}</ul>
-  <h3>صيغ مقترحة للحصة</h3>${FAC_PLANS.map(p=>`<p><b>${p.n}:</b> ${p.l.join(' · ')}</p>`).join('')}
+  <h3>صيغ مقترحة للحصة</h3>${FAC_PLANS.map((p,i)=>{const b=(v,t)=>`<button class="pill noprint" data-act="${v==='full'?'pathclear':'pathset'}" data-v="${v}" aria-pressed="${v==='full'?!(S.path&&S.path.length):S.pathN===PATHS[v].n}">${t}</button>`;const bt=[b('short','طبّق على البرنامج'),b('full','كل المحطات'),b('ws1','طبّق الجلسة 1')+' '+b('ws2','طبّق الجلسة 2')][i]||'';return `<p><b>${p.n}:</b> ${p.l.join(' · ')}<br>${bt}</p>`}).join('')}
   <h3>توجيهات المحطات</h3><div class="tblw"><table class="tbl"><thead><tr><th>المحطة</th><th>الزمن</th><th>الهدف</th><th>كيف تديرها</th><th>سؤال للنقاش</th><th>انتبه</th></tr></thead><tbody>${rows}</tbody></table></div>
   ${facExtra()}<h3>عند كشف حالة حساسة</h3><ul>${FAC_SENS.map(x=>`<li>${x}</li>`).join('')}</ul>
   <div class="help"><b>أرقام مهمة:</b><ul><li>الرقم الأخضر للطفولة: <b>1111</b></li><li>الشرطة: <b>1548</b> · الدرك الوطني: <b>1055</b></li></ul></div>`;
 }
+/* ---------- مغامرة يقظان (لعبة مرافقة) ---------- */
+const GAME_FILE='yaqzan-game.html',GAME_EMBED=true;
+let GP=null;
+function gpText(){return GP?`تقدّم اللاعب: ${GP.levels} من ${GP.of} مستوى · ${GP.stars} نجمة · ${GP.xp} خبرة`:'يظهر هنا تقدّم اللاعب بعد أن يبدأ اللعب.'}
+function gameView(){
+  const a=S.aud==='youth'?'youth':'kids',full=GAME_FILE+'?aud='+a,emb=GAME_FILE+'?embed=1&aud='+a;
+  return `<h2>مغامرة يقظان</h2>
+  <p class="lead">لعبة مرافقة تعزّز ما تعلّمه المشاركون: 27 مستوى في خمسة عوالم، منها «طريق البلاغ» وترتيب خطوات الإبلاغ. تصلح قبل الحصة وبعدها وفي البيت، وتبقى النتائج في جهاز اللاعب.</p>
+  <p class="noprint"><a class="btn" href="${full}" target="_blank" rel="noopener">افتح اللعبة بملء الشاشة ↗</a> <span class="chip" id="gprog">${esc(gpText())}</span></p>
+  ${GAME_EMBED?`<iframe class="gframe noprint" title="مغامرة يقظان" src="${emb}" allow="autoplay"></iframe>`:`<p class="warn">افتح اللعبة من الزر أعلاه (تعمل في صفحة مستقلة، وتُحدَّد الفئة تلقائيًا: ${a==='youth'?'الشباب':'الأطفال'}).</p>`}`;
+}
+window.addEventListener('message',e=>{
+  const d=e.data,f=document.querySelector('.gframe');
+  if(!d||d.source!=='yaqzan'||d.type!=='progress'||!f||e.source!==f.contentWindow)return;
+  GP=d;const el=document.getElementById('gprog');if(el)el.textContent=gpText();
+});
+/* ---------- الإبلاغ والقانون (مرجع) ---------- */
+const REF_PLAT=[
+ ['فيسبوك وماسنجر','اضغط ⋯ على المنشور أو الحساب ثم «البحث عن دعم أو الإبلاغ» واختر السبب. توجد أيضًا صفحة facebook.com/report، وتصلك نتيجة البلاغ في «صندوق الدعم».'],
+ ['واتساب','افتح المحادثة ثم اضغط اسم الجهة واختر «إبلاغ»، أو «حظر» مع تحديد خيار الإبلاغ. لا يمكن حظر مجموعة: اخرج منها (وبلّغ عنها) واحظر مشرفها. عند الإبلاغ يستلم واتساب آخر 5 رسائل من الجهة المُبلَّغ عنها دون أن تُخطَر. <b>إن احتجت الرسائل دليلًا فصوّرها قبل ذلك ولا تفعّل خيار حذفها.</b>'],
+ ['إنستغرام وتيك توك وسناب شات وغيرها','القاعدة نفسها في أغلب التطبيقات: ابحث عن ⋯ أو أيقونة المشاركة ثم «إبلاغ» (Report)، واختر السبب. هذه قاعدة عامة، وتتغير تسميات القوائم بين الإصدارات، فإن لم تجدها فابحث في «المساعدة» داخل التطبيق.']
+];
+const REF_LAW=[
+ ['تصوير شخص أو تسجيل كلامه دون إذنه ثم نشره (المساس بحرمة الحياة الخاصة)','حبس من 6 أشهر إلى 3 سنوات وغرامة من 50,000 إلى 300,000 دج','قانون العقوبات، المادة 303 مكرر (وما بعدها)'],
+ ['الدخول إلى حساب أو منظومة معلوماتية دون وجه حق (كاختراق حساب صديق)','حبس من 3 أشهر إلى سنة وغرامة من 50,000 إلى 200,000 دج، وتُضاعف العقوبة إذا ترتب على الفعل حذف معطيات أو تغييرها','قانون العقوبات، المادة 394 مكرر'],
+ ['نشر أو ترويج أخبار كاذبة عمدًا من شأنها المساس بالأمن أو النظام العام','حبس من سنة إلى 3 سنوات وغرامة من 100,000 إلى 300,000 دج','قانون العقوبات، المادة 196 مكرر (القانون 20-06، 28 أبريل 2020)'],
+ ['التهديد والابتزاز (كالتهديد بنشر صورة للحصول على مال أو صور أخرى)','يعاقب القانون عليهما بالحبس؛ وتختلف المدة والغرامة بحسب نوع التهديد وظروفه','قانون العقوبات، المواد 284 إلى 287 و371'],
+ ['خطاب الكراهية والتمييز والتحريض عليهما','يجرّمه قانون خاص؛ اطلع على نصه في الجريدة الرسمية لمعرفة العقوبات','القانون 20-05 (28 أبريل 2020)، الجريدة الرسمية العدد 25'],
+ ['جمع المعطيات الشخصية ومعالجتها (صور، أسماء، أرقام) ونشرها','قانون ينظّم معالجة المعطيات الشخصية ويحمي أصحابها، وتشرف عليه السلطة الوطنية لحماية المعطيات ذات الطابع الشخصي','القانون 18-07 (10 يونيو 2018)، الجريدة الرسمية العدد 34'],
+ ['التجنيد لصالح تنظيم إرهابي أو تمويله باستعمال وسائل الإعلام والاتصال','يُعدّ جناية في قانون العقوبات','قانون العقوبات، المادتان 87 مكرر 11 و87 مكرر 12 (القانون 16-02)']
+];
+function refView(){
+  const T=(h,id)=>`<h2 class="refsec" id="${id}">${h}</h2>`;
+  const li=a=>a.map(x=>`<li>${x}</li>`).join('');
+  return `<h2>الإبلاغ والقانون</h2>
+  <p class="lead">مرجع للمنشّط والمشاركين: كيف نبلّغ عند الخطر، وما يقوله القانون عن أفعال شائعة على الإنترنت، وكيف نحمي أنفسنا من عروض الهجرة المشبوهة والتجنيد.</p>
+  <p class="noprint refnav"><a class="pill" href="#r-rep">كيف أبلّغ؟</a> <a class="pill" href="#r-law">القانون والشباب</a> <a class="pill" href="#r-mig">الهجرة والعروض المشبوهة</a> <a class="pill" href="#r-ext">الوقاية من التجنيد</a> <button class="btn" data-act="printdoc">طباعة</button></p>
+
+  ${T('كيف أبلّغ؟ خطوات عملية','r-rep')}
+  <p>الإبلاغ ليس وشاية ولا ضعفًا، فهو أسرع طريق لوقف الضرر. وإن كنت طفلًا فأخبر راشدًا تثق به أولًا.</p>
+  <ol class="refsteps">
+   <li><b>توقف عن الحوار:</b> لا تردّ على المبتز، ولا تدفع، ولا ترسل صورًا أو معلومات إضافية.</li>
+   <li><b>وثّق قبل أي حذف أو حظر:</b> صوّر الشاشة (الرسائل، اسم الحساب، رابطه، التاريخ والوقت)، واحتفظ بأرقام الحسابات أو المحافظ المطلوبة إن وُجدت.</li>
+   <li><b>أخبر راشدًا تثق به:</b> ولي الأمر أو المنشّط أو مرشد المؤسسة. لا تواجه الأمر وحدك.</li>
+   <li><b>بلّغ المنصة</b> عن الحساب أو المحتوى ثم احظره بعد التوثيق.</li>
+   <li><b>بلّغ الجهات المختصة</b> إن كان هناك ابتزاز أو تهديد أو استدراج (الجدول أدناه).</li></ol>
+  <h3>الإبلاغ داخل التطبيقات</h3>
+  <div class="tblw"><table class="tbl"><thead><tr><th>التطبيق</th><th>كيف</th></tr></thead><tbody>${REF_PLAT.map(r=>`<tr><td><b>${r[0]}</b></td><td>${r[1]}</td></tr>`).join('')}</tbody></table></div>
+  <h3>الجهات في الجزائر</h3>
+  <div class="tblw"><table class="tbl"><thead><tr><th>الجهة</th><th>كيف تتواصل</th></tr></thead><tbody>
+   <tr><td><b>الأمن الوطني (الشرطة)</b></td><td>الرقم <b>1548</b> · الموقع الرسمي algeriepolice.dz</td></tr>
+   <tr><td><b>الدرك الوطني</b></td><td>الرقم <b>1055</b> · الشكوى المسبقة عبر الإنترنت على ppgn.mdn.dz (قد تحتاج إلى تأكيدها بالحضور إلى أقرب وحدة، فاسأل عن المدة)</td></tr>
+   <tr><td><b>الرقم الأخضر للطفولة</b></td><td><b>1111</b> للتبليغ عن المساس بحقوق الطفل</td></tr></tbody></table></div>
+  <h3>إذا انتشرت صورة حميمية لك أو هُدّدت بنشرها</h3>
+  <ul><li>الصورة التُقطت وأنت دون 18: خدمة <b>Take It Down</b> (takeitdown.ncmec.org) مجانية وسرية، <b>ولا ترسل الصورة نفسها لأحد</b>؛ تعمل على المنصات المشاركة فقط.</li>
+  <li>الصورة التُقطت بعد بلوغك 18: خدمة <b>StopNCII</b> (stopncii.org).</li>
+  <li>في الحالتين: أخبر راشدًا موثوقًا وبلّغ الجهات أعلاه. لست مذنبًا، والذنب على من يبتز.</li></ul>
+  <div class="refs">المصادر: دليل ميتا للإبلاغ عن الاحتيال على فيسبوك (منشور على scamwatch.gov.au)؛ مركز مساعدة واتساب «How to block and report someone»؛ خدمة Take It Down التابعة للمركز الوطني الأمريكي للأطفال المفقودين والمستغَلين (NCMEC)؛ StopNCII.org؛ بوابة وزارة البريد والمواصلات «الأسرة والطفل على الإنترنت»؛ موقعا الدرك الوطني والأمن الوطني.</div>
+
+  ${T('القانون والشباب: ما يجب أن نعرفه','r-law')}
+  <p>هذا الجدول تبسيط تعليمي لأفعال شائعة بين الشباب، وليس استشارة قانونية. قانون العقوبات عُدّل مرات عدة، فتحقق من النص الساري في الجريدة الرسمية أو عند محامٍ قبل الاستشهاد به رسميًا. للقاصرين أحكام خاصة في المسؤولية الجزائية، فاسأل مختصًا.</p>
+  <div class="tblw"><table class="tbl"><thead><tr><th>الفعل</th><th>ما يقرره القانون</th><th>المرجع</th></tr></thead><tbody>${REF_LAW.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('')}</tbody></table></div>
+  <p class="warn">فكرة تُقال للمشاركين: «ما يحدث على الشاشة له أثر حقيقي، ومن يشارك صورة أو إشاعة يتحمل نصيبه من المسؤولية».</p>
+
+  ${T('الهجرة والعروض المشبوهة','r-mig')}
+  <p>كثير من الشباب يحلمون بفرصة في الخارج، وهذا حق مشروع. المشكلة في من يبيع الوهم أو يعرّض حياتك للخطر. هذا القسم يعلّم كيف تتحقق قبل أن تدفع أو تسلّم وثائقك.</p>
+  <h3>علامات خطر في العروض</h3>
+  <ul>${li(['وعد بتأشيرة أو عقد عمل «مضمون» خلال أيام.','طلب مبلغ مسبق قبل أي وثيقة أو عقد مكتوب.','التواصل في محادثات خاصة فقط، دون مقر أو اسم جهة يمكن التحقق منه.','شهادات «ناجحين» وصور سفر لا يمكن التأكد من صحتها.','استعجال: «العرض ينتهي اليوم، ادفع الآن».','طلب جواز سفرك أو نسخ وثائقك لشخص لا تعرفه.','عرض سفر بحري أو بري «بلا أوراق».'])}</ul>
+  <h3>أسئلة قبل أي خطوة</h3>
+  <ul>${li(['من الجهة بالضبط، وهل لها عنوان وترخيص يمكن التحقق منهما رسميًا؟','هل هناك عقد مكتوب باسمي وبنود واضحة؟','هل يطلبون مالًا قبل أن أرى أي وثيقة؟','هل يمكنني التأكد من العرض لدى جهة رسمية (مديرية التشغيل في ولايتي، أو القنصلية المعنية)؟','هل أنا أتعرض لضغط كي لا أستشير أهلي؟'])}</ul>
+  <h3>ماذا يقول القانون؟</h3>
+  <p>جرّم القانون 09-01 (2009) المعدِّل لقانون العقوبات الهجرة غير الشرعية (المادة 175 مكرر 1: مغادرة التراب الوطني بصفة غير شرعية) وتهريب المهاجرين. وفوق المخالفة القانونية، فالسفر غير النظامي خطر على الحياة، ومن يعرضه عليك قد يكون محتالًا يأخذ مالك ويتركك.</p>
+  <h3>ماذا أفعل؟</h3>
+  <ul>${li(['لا تدفع ولا تسلّم جواز السفر أو الوثائق لمن لا تعرفه.','صوّر العرض والحساب واحتفظ بالرسائل ثم بلّغ الشرطة (1548) أو الدرك (1055).','حذّر أصدقاءك بدل نشر الإعلان.','تحدّث مع أهلك أو منشّط الدار أو مرشد المؤسسة قبل أي قرار، وابحث عن المنح والتكوين عبر القنوات الرسمية للوزارات والجامعات.'])}</ul>
+  <div class="refs">المصادر: قانون العقوبات المعدَّل بالقانون 09-01 (المادة 175 مكرر 1)، كما عرضته دراسات أكاديمية جزائرية (مجلة الدراسات القانونية والسياسية، ومجلة الحقوق والعلوم السياسية)؛ قنوات البلاغ كما في القسم الأول. علامات الخطر وأسئلة التحقق إرشادات عامة للوقاية من الاحتيال وليست نصًا قانونيًا.</div>
+
+  ${T('الوقاية من التجنيد والتلاعب عبر الألعاب والمجموعات','r-ext')}
+  <p class="warn">قسم حساس: يُقدَّم بطابع وقائي فقط، وليس لعرض أفكار متطرفة. يُستحسن أن يتفق المنشّط مع إدارة المؤسسة على طريقة طرحه حسب سن الحاضرين.</p>
+  <p>يستغل من يريد التلاعب بالشباب الوحدة والإحباط والرغبة في الانتماء، ويبدأ غالبًا بصداقة لطيفة في لعبة أو مجموعة، ثم يدفع صاحبه شيئًا فشيئًا بعيدًا عن أهله وأصدقائه. ويهمّنا هنا الأسلوب، بغضّ النظر عن الجهة التي تقف خلفه.</p>
+  <h3>علامات عامة للتلاعب</h3>
+  <ul>${li(['مودة سريعة ومبالغ فيها، وإحساس بأنك «مميز» أو «مفهوم» كما لم تكن من قبل.','الانتقال بسرعة من اللعبة أو المجموعة العامة إلى محادثات خاصة أو تطبيقات مشفرة.','طلب السرية: «لا تخبر أهلك ولا أصدقاءك».','خطاب «نحن الأخيار وهم الأشرار» وتشويه كل من يخالفهم.','طلب ولاء أو مال أو صور أو «مهمة» لإثبات الانتماء.','استغلال غضبك أو ظلم تشعر به لدفعك نحو العنف أو الكراهية.'])}</ul>
+  <h3>ماذا أفعل؟</h3>
+  <ul>${li(['توقف عن المحادثة ولا تحاول إقناعه بمفردك أو الدخول في جدال طويل معه.','احتفظ بلقطات الشاشة واسم الحساب ورابطه، واخبر راشدًا تثق به.','بلّغ المنصة، ثم الشرطة (1548) أو الدرك (1055) إن كان هناك تحريض على العنف أو تجنيد، وللأطفال الرقم الأخضر 1111.','لا تعاقب صديقك أو ابنك على الاحتكاك بهذه الجهات: العقاب يدفعه إلى الصمت وإلى المزيد من التعلق بمن يتلاعب به.'])}</ul>
+  <h3>للمنشّط والمربّي</h3>
+  <ul>${li(['افتح حوارًا هادئًا يسمح بالأسئلة والاختلاف بدل المحاضرة والتخويف، وهذا ما يوصي به دليل اليونسكو للمعلمين.','ركّز على التفكير النقدي: من يتحدث؟ ماذا يريد مني؟ لماذا الاستعجال والسرية؟','لا تُلصق وصمة بمشارك أو مجموعة أو حيّ، وحافظ على جو يشعر فيه الجميع بالاحترام.','اعرف الشخص المسؤول في مؤسستك عن التعامل مع أي حالة قلق، ولا تتصرف وحدك.'])}</ul>
+  <p>ويعاقب قانون العقوبات (المادتان 87 مكرر 11 و87 مكرر 12، القانون 16-02) على التجنيد والتمويل لأغراض إرهابية باستعمال وسائل الإعلام والاتصال، ويعدّه جناية.</p>
+  <div class="refs">المصادر: «دليل المعلم للوقاية من التطرف العنيف» (اليونسكو، 2016)؛ دراسة «جرائم المساس بأنظمة المعالجة الآلية للمعطيات» (مجلة النبراس للدراسات القانونية) في تعليقها على القانون 16-02؛ أرقام الإبلاغ كما في القسم الأول. علامات التلاعب العامة إرشادات وقائية شائعة وليست منقولة عن هذه المراجع.</div>`;
+}
 function parView(){
   return `<h2>دليل الأولياء والمربين</h2><p class="lead">كيف نرافق أبناءنا على الإنترنت بحوار وثقة، ونحميهم بخطوات عملية بسيطة.</p>
-  <p class="noprint"><button class="btn" data-act="printdoc">طباعة الدليل</button></p>
+  <p class="noprint"><button class="btn" data-act="printdoc">طباعة الدليل</button> <button class="btn sec" data-act="kitprint" data-v="pact">طباعة ميثاق الأسرة الرقمي</button></p>
   ${PAR.map(s=>`<section class="psec"><h3>${s.h}</h3>${s.p?`<p>${s.p}</p>`:''}${s.ul?`<ul>${s.ul.map(x=>`<li>${x}</li>`).join('')}</ul>`:''}</section>`).join('')}
   <div class="refs">دليل عام مبني على الإرشادات المعلنة للجهات الجزائرية المعنية بحماية الطفولة والأمن، وعلى ممارسات شائعة في حماية الأطفال على الإنترنت. لا يغني عن استشارة مختص عند الحاجة.</div>`;
 }
@@ -1563,14 +1686,14 @@ function parView(){
 function drawTrack(){
   $('#track').innerHTML=ST.map((s,i)=>{
     const cls=i===S.i?'cur':(S.pts[s.k]!==undefined||(s.k==='pre'&&Object.keys(S.pre).length)||(s.k==='post'&&Object.keys(S.post).length)||(i<S.i&&S.visited[i]))?'done':'';
-    return `<button class="node ${cls}" data-act="go" data-i="${i}" aria-label="${s.n}" ${i===S.i?'aria-current="step"':''}><span class="dot">${s.ic}</span><span>${s.n}</span></button>`;
+    return `<button class="node ${cls}${inPath(s.k)?'':' skip'}" data-act="go" data-i="${i}" aria-label="${s.n}" ${i===S.i?'aria-current="step"':''}><span class="dot">${s.ic}</span><span>${s.n}</span></button>`;
   }).join('');
   const c=document.querySelector('.node.cur');
   if(c&&c.scrollIntoView)c.scrollIntoView({inline:'center',block:'nearest'});
 }
 function syncBar(){
   const tw=document.querySelector('.track-wrap');if(tw)tw.hidden=S.mode!=='prog';
-  const map={prog:'#tProg',contest:'#tCt',parents:'#tPar',fac:'#tFac',kit:'#tKit',report:'#tRep'};
+  const map={prog:'#tProg',contest:'#tCt',parents:'#tPar',fac:'#tFac',ref:'#tRef',game:'#tGame',kit:'#tKit',report:'#tRep'};
   Object.keys(map).forEach(m=>{const e=$(map[m]);if(e)e.setAttribute('aria-pressed',S.mode===m)});
   [['dz','#bDz'],['snd','#bSnd'],['shuf','#bShuf'],['hc','#bHc'],['fnotes','#bFn'],['stage','#bStage']].forEach(([k,id])=>{const e=$(id);if(e)e.setAttribute('aria-pressed',!!S[k])});
   const de=document.documentElement;
@@ -1587,13 +1710,15 @@ function render(top){
   if(S.mode==='report'){app.innerHTML=repView();if(top)window.scrollTo({top:0,behavior:'smooth'});return}
   if(S.mode==='parents'){app.innerHTML=parView();if(top)window.scrollTo({top:0,behavior:'smooth'});return}
   if(S.mode==='fac'){app.innerHTML=facView();if(top)window.scrollTo({top:0,behavior:'smooth'});return}
+  if(S.mode==='ref'){app.innerHTML=refView();if(top)window.scrollTo({top:0,behavior:'smooth'});return}
+  if(S.mode==='game'){app.innerHTML=gameView();if(top)window.scrollTo({top:0,behavior:'smooth'});return}
   S.visited[S.i]=true;
   const k=ST[S.i].k;
   curKey=k;
-  app.innerHTML=VIEW[k]()+`<div class="nav">
-    <button class="btn sec" data-act="prev" ${S.i===0?'disabled':''}>السابق</button>
-    <span class="score">النقاط: <b id="sc">${sum()}</b> / ${TOTAL} · 🏅 <b id="bgc">${nBadges()}</b></span>
-    <button class="btn" data-act="next" ${S.i===ST.length-1?'disabled':''}>${S.i===0?'ابدأ الرحلة':'التالي'}</button></div>`;
+  app.innerHTML=pathBar()+VIEW[k]()+`<div class="nav">
+    <button class="btn sec" data-act="prev" ${atStart()?'disabled':''}>السابق</button>
+    <span class="score">النقاط: <b id="sc">${sum()}</b> / ${ptot()} · 🏅 <b id="bgc">${nBadges()}</b></span>
+    <button class="btn" data-act="next" ${atEnd()?'disabled':''}>${S.i===0?'ابدأ الرحلة':'التالي'}</button></div>`;
   drawTrack();
   if(k==='pass')initPass();
   if(k==='bal')drawBal();
@@ -1657,9 +1782,9 @@ function drawBal(){
 
 /* certificate & results */
 function summaryText(){
-  const p=sum(),pct=Math.round(p/TOTAL*100),n=PRETEST[S.aud].length;
+  const p=sum(),pct=Math.round(p/ptot()*100),n=PRETEST[S.aud].length;
   const a=Object.keys(S.pre).length>=n?qzScore('pre')+'/'+n:'-',b=Object.keys(S.post).length>=n?qzScore('post')+'/'+n:'-';
-  return `الاسم: ${S.nm||'-'}\nالمؤسسة: ${S.org||'-'}\nالفئة: ${K()?'أطفال':'شباب'}\nنتيجة المحطات: ${p}/${TOTAL}\nالمستوى: ${lvlOf(pct)}\nالاختبار القبلي: ${a}\nالاختبار البعدي: ${b}`;
+  return `الاسم: ${S.nm||'-'}\nالمؤسسة: ${S.org||'-'}\nالفئة: ${K()?'أطفال':'شباب'}\nنتيجة المحطات: ${p}/${ptot()}\nالمستوى: ${lvlOf(pct)}\nالاختبار القبلي: ${a}\nالاختبار البعدي: ${b}`;
 }
 function certHead(){
   const l=[S.dwn,S.dir,S.org].map(x=>(x||'').trim()).filter(Boolean);
@@ -1692,12 +1817,12 @@ function initEnd(){
   $('#lgd').addEventListener('click',()=>setLogo(LOGO));
   $('#lgx').addEventListener('click',()=>setLogo(''));
   pr.addEventListener('click',()=>{
-    const p=sum(),pct=Math.round(p/TOTAL*100);
+    const p=sum(),pct=Math.round(p/ptot()*100);
     const d=new Date().toLocaleDateString('ar-DZ');
     $('#printcert').innerHTML=`<div class="pc-in">${certHead()}<div class="pt">شهادة سفير الأمان الرقمي</div>
       <p>تُمنح هذه الشهادة إلى</p><div class="nm">${esc((S.nm||'').trim()||'...........................')}</div>
       <p>تقديرًا للمشاركة الفعّالة في الحصة التحسيسية «إنترنت آمن، جيل واعٍ» وتحقيق المستوى:</p><div class="lv">${lvlOf(pct)}</div>
-      <p>النتيجة: ${p} / ${TOTAL}</p>
+      <p>النتيجة: ${p} / ${ptot()}</p>
       <div class="sigs"><div><hr>توقيع المنشّط</div><div class="stamp">ختم المؤسسة</div><div><hr>التاريخ: ${d}</div></div></div>`;
     sfx('win');printWith('pc');
   });
@@ -1709,7 +1834,7 @@ function initEnd(){
   dl.addEventListener('click',()=>{
     try{
       const p=sum(),n=PRETEST[S.aud].length;
-      const csv='\ufeffالاسم,المؤسسة,الفئة,نتيجة المحطات,من,القبلي,البعدي\n'+[S.nm,S.org,K()?'أطفال':'شباب',p,TOTAL,Object.keys(S.pre).length>=n?qzScore('pre'):'',Object.keys(S.post).length>=n?qzScore('post'):''].map(x=>'"'+String(x).replace(/"/g,'""')+'"').join(',');
+      const csv='\ufeffالاسم,المؤسسة,الفئة,نتيجة المحطات,من,القبلي,البعدي\n'+[S.nm,S.org,K()?'أطفال':'شباب',p,ptot(),Object.keys(S.pre).length>=n?qzScore('pre'):'',Object.keys(S.post).length>=n?qzScore('post'):''].map(x=>'"'+String(x).replace(/"/g,'""')+'"').join(',');
       const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download='result.csv';document.body.appendChild(a);a.click();a.remove();
       msg.textContent='إذا لم يبدأ التنزيل فاستعمل «نسخ نتيجتي».';
     }catch(_){msg.textContent='التنزيل غير متاح هنا؛ استعمل «نسخ نتيجتي».'}
@@ -1744,7 +1869,7 @@ function setLog(a){try{localStorage.setItem(LOGK,JSON.stringify(a))}catch(_){}}
 function logEntry(){
   const n=PRETEST[S.aud].length;
   if(!S.logId)S.logId=Date.now();
-  return {id:S.logId,nm:S.nm||'',aud:S.aud,score:sum(),total:TOTAL,pre:Object.keys(S.pre).length>=n?qzScore('pre'):null,post:Object.keys(S.post).length>=n?qzScore('post'):null,qn:n,sv:[0,1,2].map(i=>S.sv&&S.sv[i]!==undefined?S.sv[i]:null)};
+  return {id:S.logId,nm:S.nm||'',aud:S.aud,score:sum(),total:ptot(),pre:Object.keys(S.pre).length>=n?qzScore('pre'):null,post:Object.keys(S.post).length>=n?qzScore('post'):null,qn:n,ps:Object.assign({},S.pts),sv:[0,1,2].map(i=>S.sv&&S.sv[i]!==undefined?S.sv[i]:null)};
 }
 function addLog(){const a=getLog(),e=logEntry(),i=a.findIndex(x=>x.id===e.id);if(i>=0)a[i]=e;else a.push(e);setLog(a);save();return a.length}
 const avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:null;
@@ -1867,6 +1992,31 @@ function printKit(html){$('#printkit').innerHTML=html;printWith('pk')}
 const FBURL='https://www.facebook.com/groups/www.diwan.js1236';
 function autoUrl(){try{if(/^https?:$/.test(location.protocol))return location.origin+location.pathname.replace(/index\.html$/,'')}catch(_){}return ''}
 const progUrl=()=>(S.kitUrl||'').trim()||autoUrl();
+function pactHTML(){
+  const L='<span class="pl"></span>';
+  return `${certHead()}<div class="kpage pact"><h1 class="kt">ميثاق الأسرة الرقمي</h1>
+  <p class="pn">اتفاق بسيط بيننا نراجعه معًا بعد شهر. نكتب أرقامنا بأنفسنا ونوقّع جميعًا.</p>
+  <div class="pnames"><span>اسم الابن/الابنة: ${L}</span><span>وليّ الأمر: ${L}</span><span>التاريخ: ${L}</span></div>
+  <h2>أنا أتعهّد بأن:</h2>
+  <ul class="pck">
+   <li>أستعمل الهاتف والشاشات ${L} ساعة في أيام الدراسة، و${L} ساعة في العطلة.</li>
+   <li>أُبقي الهاتف خارج غرفة النوم بعد الساعة ${L}، وبعيدًا عن مائدة الطعام.</li>
+   <li>لا أعطي رقم هاتفي أو عنواني أو كلمة سري أو صورة لي لأي شخص، حتى لو بدا لطيفًا.</li>
+   <li>لا أشتري داخل الألعاب ولا أحمّل تطبيقًا جديدًا دون إذن.</li>
+   <li>أنشر فقط ما أرضى أن يراه جدّي ومعلمي، وأسأل قبل نشر صورة غيري.</li>
+   <li><b>أُخبر وليّي فورًا بأي رسالة تخيفني أو تطلب مني سرًّا أو صورة أو مالًا. ولن أُعاقَب لأنني أخبرت.</b></li>
+  </ul>
+  <h2>ووليّ الأمر يتعهّد بأن:</h2>
+  <ul class="pck">
+   <li>يستمع إليّ أولًا قبل أن يحاسبني أو يغضب.</li>
+   <li>لا يصادر جهازي عقابًا لي إن أخبرته بمشكلة أو طلبتُ مساعدته.</li>
+   <li>يتعلّم معي كيف تعمل تطبيقاتي ويلعب معي أحيانًا.</li>
+   <li>يخصّص وقتًا للعب والرياضة والأنشطة بعيدًا عن الشاشة، ${L}</li>
+  </ul>
+  <div class="pnum"><b>أرقام عند الحاجة:</b> الرقم الأخضر للطفولة <b>1111</b> · الشرطة <b>1548</b> · الدرك الوطني <b>1055</b></div>
+  <div class="sigs2"><div><hr>توقيع الابن/الابنة</div><div><hr>توقيع وليّ الأمر</div></div>
+  <p class="pn">موعد المراجعة القادمة: ${L}</p></div>`;
+}
 function voteHTML(){
   const c=(cl,t,s)=>`<div class="vc ${cl}"><div class="vt">${t}</div><div class="vs">${s}</div></div>`;
   return `<div class="kpage"><h1 class="kt">بطاقات التصويت: إشارة المرور</h1><div class="vcol">${c('g','أشاركه','يمكن نشره')}${c('o','أسأل أولًا','أستشير شخصًا بالغًا')}${c('r','لا يُشارك أبدًا','خطر')}</div></div>
@@ -1892,6 +2042,7 @@ function kitView(){
   <div class="kitg">
    <div class="kit"><h3>🚦 بطاقات التصويت</h3><p>إشارة المرور (أخضر، برتقالي، أحمر) وبطاقات «موثوق/مشكوك» و«سليم/خاطئ» و«سليمة/احتيال» للتصويت دون أجهزة.</p><button class="btn" data-act="kitprint" data-v="vote">طباعة</button></div>
    <div class="kit"><h3>🎭 بطاقات لعب الأدوار</h3><p>ثماني بطاقات مواقف بأدوار وأسئلة، بحسب الفئة المختارة (${K()?'الأطفال':'الشباب'}).</p><button class="btn" data-act="kitprint" data-v="rp">طباعة</button></div>
+   <div class="kit"><h3>🤝 ميثاق الأسرة الرقمي</h3><p>ورقة اتفاق بين الطفل ووليّه (أوقات الشاشة، ما لا يُشارك، ومن يُخبر)، تُطبع وتُوقَّع وتُؤخذ إلى البيت.</p><button class="btn" data-act="kitprint" data-v="pact">طباعة</button></div>
    <div class="kit wide"><h3>🖼️ ملصق QR</h3><p>ملصق يعلَّق في الدار، يحمل رمزين: رابط البرنامج ومجموعة الديوان على فيسبوك.</p>
     <p class="crow"><label>رابط البرنامج: <input id="kurl" dir="ltr" value="${esc(S.kitUrl)}" placeholder="${esc(autoUrl()||'https://…')}" style="width:min(100%,420px)"></label></p>
     <p class="crow"><label>سطر اختياري (المكان/الموعد): <input id="knote" value="${esc(S.kitNote)}" maxlength="80" style="width:min(100%,420px)"></label></p>
@@ -1903,6 +2054,21 @@ function kitView(){
 }
 
 /* ---------- report ---------- */
+function repSum(){
+  const a=getLog(),both=a.filter(e=>e.pre!=null&&e.post!=null);
+  const up=both.filter(e=>e.post>e.pre).length,same=both.filter(e=>e.post===e.pre).length,down=both.filter(e=>e.post<e.pre).length;
+  const wk=Object.keys(MAXP).map(k=>{const v=a.filter(e=>e.ps&&e.ps[k]!==undefined).map(e=>e.ps[k]/MAXP[k]);return {k,n:v.length,r:v.length?avg(v):null}}).filter(x=>x.n>=2&&x.r!=null).sort((x,y)=>x.r-y.r).slice(0,3);
+  return {a,both,up,same,down,wk};
+}
+function repSummaryHTML(){
+  const st=stats(),m=repSum();if(!m.a.length)return '';
+  const bar=(lab,v,cls)=>v==null?'':`<div class="sbar"><span>${lab}</span><div class="sb"><i class="${cls}" style="width:${Math.round(v/st.qn*100)}%"></i></div><b>${f1(v)} / ${st.qn}</b></div>`;
+  const nb=m.both.length;
+  return `<h3>ملخص الحصة بالأرقام</h3><div class="rsum">
+   ${bar('الاختبار القبلي',st.pre,'pre')}${bar('الاختبار البعدي',st.post,'post')}
+   ${nb?`<p>تحسّن <b>${m.up}</b> من <b>${nb}</b> مشاركًا (${Math.round(m.up/nb*100)}%)، وثبتت نتيجة <b>${m.same}</b>، وتراجعت نتيجة <b>${m.down}</b>.</p>`:'<p class="warn">يظهر التحسن حين يُكمل مشارك واحد على الأقل القبلي والبعدي.</p>'}
+   ${m.wk.length?`<p><b>أكثر المحطات تعثرًا:</b> ${m.wk.map(x=>`${esc(ST.find(s=>s.k===x.k).n)} (${Math.round(x.r*100)}%)`).join(' · ')} — تستحق مراجعة في الحصة القادمة.</p>`:''}</div>`;
+}
 function repHTML(){
   const r=S.rep,st=stats();
   const svrow=SURVEY.map((q,i)=>{const v=st.sv[i];return `<tr><td>${q}</td><td>${v.yes}</td><td>${v.mid}</td><td>${v.no}</td></tr>`}).join('');
@@ -1919,6 +2085,7 @@ function repHTML(){
    <tr><th>متوسط التحسن</th><td>${st.pre==null||st.post==null?'—':f1(st.post-st.pre)}</td></tr></tbody></table>
   <h3>رضا المشاركين</h3>
   <table class="tbl"><thead><tr><th>السؤال</th><th>نعم</th><th>إلى حد ما</th><th>لا</th></tr></thead><tbody>${svrow}</tbody></table>
+  ${repSummaryHTML()}
   ${ctRepHTML()}
   <h3>ملاحظات المنشّط</h3><p class="rnotes">${esc(r.notes||'').replace(/\n/g,'<br>')||'&nbsp;'}</p>
   <div class="sigs2"><div><hr>توقيع المنشّط</div><div><hr>ختم المؤسسة</div></div></div>`;
@@ -1940,7 +2107,8 @@ function repView(){
    <span>متوسط المحطات: <b>${f1(st.sc)}${st.sc==null?'':'%'}</b></span>
    <span>متوسط القبلي/البعدي: <b>${f1(st.pre)} ← ${f1(st.post)}</b></span>
    <span>«نعم» في رضا المشاركين: <b>${st.sv.map(v=>v.n?Math.round(v.yes/v.n*100)+'%':'—').join(' · ')}</b></span></div></div>
-  <p class="crow"><button class="btn" data-act="repprint">طباعة التقرير</button> <button class="btn sec" data-act="repcsv">تنزيل السجل CSV</button> <button class="btn sec" data-act="repclear">مسح السجل</button> <span class="warn" id="rpm" aria-live="polite"></span></p>
+  <p class="crow"><button class="btn" data-act="repprint">طباعة التقرير</button> <button class="btn sec" data-act="repcsv">تنزيل السجل CSV</button> <button class="btn sec" data-act="repjson">تنزيل الحصة كاملة (JSON)</button> <button class="btn sec" data-act="repclear">مسح السجل</button> <span class="warn" id="rpm" aria-live="polite"></span></p>
+  ${repSummaryHTML()}
   ${ctRepHTML()}
   ${log.length?`<div class="tblw"><table class="tbl"><thead><tr><th>#</th><th>الاسم</th><th>الفئة</th><th>المحطات</th><th>قبلي</th><th>بعدي</th></tr></thead><tbody>${log.slice(-60).map((e,i)=>`<tr><td>${i+1}</td><td>${esc(e.nm||'—')}</td><td>${e.aud==='kids'?'أطفال':'شباب'}</td><td>${e.score}/${e.total}</td><td>${e.pre==null?'—':e.pre+'/'+e.qn}</td><td>${e.post==null?'—':e.post+'/'+e.qn}</td></tr>`).join('')}</tbody></table></div>`:'<p class="warn">السجل فارغ.</p>'}`;
 }
@@ -1964,6 +2132,9 @@ function addClick(a,t,e){
   const key=t.dataset.key;
   switch(a){
    case 'hpopen':openHelp();return true;
+   case 'pathset':{const pp=PATHS[t.dataset.v];if(!pp)return true;S.path=pp.k.slice();S.pathN=pp.n;S.mode='prog';S.i=0;save();render(true);return true}
+   case 'pathclear':S.path=null;S.pathN='';save();render(true);return true;
+   case 'repjson':{try{const st=stats();download('session-'+(S.rep.date||'data')+'.json',JSON.stringify({version:1,exported:new Date().toISOString(),report:S.rep,summary:{participants:st.n,avgStations:st.sc,avgPre:st.pre,avgPost:st.post},participants:getLog(),contests:getCtLog()},null,1),'application/json')}catch(_){}return true}
    case 'fs':{S.fs=Math.max(-1,Math.min(4,(S.fs||0)+(+t.dataset.d)));try{localStorage.setItem(FSK,String(S.fs))}catch(_){}save();syncBar();return true}
    case 'ctboard':CT.board=!CT.board;render();return true;
    case 'cttb':{
@@ -2003,7 +2174,7 @@ function addClick(a,t,e){
    case 'ctquit':ctStop();CT.phase='end';CT.tb=false;CT.tied=null;CT.board=false;ctSave();render(true);return true;
    case 'ctagain':ctBegin();render(true);return true;
    case 'ctsetup':ctStop();CT.phase='setup';render(true);return true;
-   case 'kitprint':{const v=t.dataset.v;printKit(v==='vote'?voteHTML():v==='rp'?rpHTML():posterHTML());return true}
+   case 'kitprint':{const v=t.dataset.v;printKit(v==='vote'?voteHTML():v==='rp'?rpHTML():v==='pact'?pactHTML():posterHTML());return true}
    case 'kitgoend':go(ST.length-1);return true;
    case 'repprint':printKit(repHTML());return true;
    case 'repcsv':try{download('session-log.csv',logCsv());const m=$('#rpm');if(m)m.textContent='إذا لم يبدأ التنزيل فانسخ البيانات من الجدول.'}catch(_){}return true;
@@ -2048,12 +2219,28 @@ function closeSplash(){
   sp.hidden=true;document.body.classList.remove('nosc');
   if(lastFocus&&lastFocus.focus)lastFocus.focus();
 }
+/* ---------- مسارات الحصة بالوقت ---------- */
+const PATHS={
+ short:{n:'حصة قصيرة (45 دقيقة)',k:['pre','pass','chat','black','fraud','post']},
+ ws1:{n:'ورشة — الجلسة الأولى',k:['pre','pass','chat','share','black']},
+ ws2:{n:'ورشة — الجلسة الثانية',k:['news','bully','fraud','pay','games','apps','ai','edu','influ','wa','trace','harm','law','bal','post']}
+};
+function inPath(k){return k==='intro'||k==='end'||!S.path||!S.path.length||S.path.includes(k)}
+function stepIdx(i,d){let j=i+d;while(j>=0&&j<ST.length&&!inPath(ST[j].k))j+=d;return(j<0||j>=ST.length)?i:j}
+const atEnd=()=>stepIdx(S.i,1)===S.i,atStart=()=>stepIdx(S.i,-1)===S.i;
+function ptot(){return(S.path&&S.path.length)?(S.path.reduce((a,k)=>a+(MAXP[k]||0),0)||TOTAL):TOTAL}
+function pathMin(){return(S.path||[]).reduce((a,k)=>a+((FAC[k]&&FAC[k].t)||0),0)}
+function pathBar(){
+  if(!S.path||!S.path.length)return '';
+  return `<div class="pathbar noprint">📍 المسار المختار: <b>${esc(S.pathN||'مسار مخصص')}</b> · ${S.path.length} محطة ≈ ${pathMin()} دقيقة <button class="pill" data-act="pathclear">إلغاء المسار</button></div>`;
+}
 /* ---------- شريط السابق/التالي العائم + السحب ---------- */
 function fnavUpd(){
   const f=$('#fnav');if(!f)return;
   f.hidden=S.mode!=='prog';if(f.hidden)return;
-  $('#fnPrev').disabled=S.i===0;$('#fnNext').disabled=S.i===ST.length-1;
-  $('#fnPos').textContent=(S.i+1)+' / '+ST.length;
+  $('#fnPrev').disabled=atStart();$('#fnNext').disabled=atEnd();
+  const pl=ST.map((_,i)=>i).filter(i=>inPath(ST[i].k)),pos=pl.indexOf(S.i);
+  $('#fnPos').textContent=(pos<0?'—':pos+1)+' / '+pl.length;
 }
 (function(){
   let sx=0,sy=0,t0=0,ok=false;
@@ -2075,7 +2262,7 @@ function fnavUpd(){
     const t=e.changedTouches[0],dx=t.clientX-sx,dy=t.clientY-sy;
     if(Date.now()-t0>700||Math.abs(dx)<90||Math.abs(dx)<Math.abs(dy)*2)return;
     try{if(String(window.getSelection()))return}catch(_){}
-    go(dx>0?S.i+1:S.i-1);   /* الاتجاه معكوس لأن الصفحة من اليمين إلى اليسار */
+    go(stepIdx(S.i,dx>0?1:-1));   /* الاتجاه معكوس لأن الصفحة من اليمين إلى اليسار */
   },{passive:true});
 })();
 /* ---------- أزرار الانتقال السريع ---------- */
@@ -2140,8 +2327,8 @@ document.addEventListener('click',e=>{
   if(a==='vsound'){vv.muted=false;viBtn('#vsnd',false);return}
 
   if(addClick(a,t,e))return;
-  if(a==='next')go(S.i+1);
-  else if(a==='prev')go(S.i-1);
+  if(a==='next')go(stepIdx(S.i,1));
+  else if(a==='prev')go(stepIdx(S.i,-1));
   else if(a==='go')go(+t.dataset.i);
   else if(a==='mode'){S.mode=t.dataset.v;render(true)}
   else if(a==='tg'){
@@ -2223,8 +2410,8 @@ document.addEventListener('keydown',e=>{
   const tag=(e.target.tagName||'').toLowerCase();
   if(tag==='input'||tag==='textarea')return;
   if(S.mode!=='prog')return;
-  if(e.key==='ArrowLeft')go(S.i+1);
-  if(e.key==='ArrowRight')go(S.i-1);
+  if(e.key==='ArrowLeft')go(stepIdx(S.i,1));
+  if(e.key==='ArrowRight')go(stepIdx(S.i,-1));
 });
 $('#bReset').addEventListener('click',()=>{fresh(true);try{localStorage.removeItem(KEY)}catch(_){}SAVED=null;render(true)});
 

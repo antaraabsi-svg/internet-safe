@@ -1,6 +1,6 @@
 /* عمل البرنامج دون إنترنت: الصفحة أولًا من الشبكة (لتصل التحديثات)، ثم من الذاكرة عند انقطاعها */
-const CACHE = 'diwan-safe-v1';
-const FILES = ['./', 'index.html', 'intro.mp4', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png'];
+const CACHE = 'diwan-safe-v3';
+const FILES = ['./', 'index.html', 'intro.mp4', 'yaqzan-game.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => Promise.all(FILES.map(f => c.add(f).catch(() => {})))).then(() => self.skipWaiting()));
